@@ -1,0 +1,65 @@
+diff --exclude '*.o' --exclude '*.bc' -ru vanilla/make-4.2/file.c patch/make-4.2/file.c
+--- vanilla/make-4.2/file.c	2019-12-08 09:40:47.622080163 +0200
++++ patch/make-4.2/file.c	2019-12-08 09:41:07.046181817 +0200
+@@ -1142,7 +1142,7 @@
+ void
+ init_hash_files (void)
+ {
+-  hash_init (&files, 1000, file_hash_1, file_hash_2, file_hash_cmp);
++  hash_init (&files, 20, file_hash_1, file_hash_2, file_hash_cmp);
+ }
+ 
+ /* EOF */
+diff --exclude '*.o' --exclude '*.bc' -ru vanilla/make-4.2/misc.c patch/make-4.2/misc.c
+--- vanilla/make-4.2/misc.c	2019-12-08 09:40:47.618080142 +0200
++++ patch/make-4.2/misc.c	2019-12-08 09:41:07.054181859 +0200
+@@ -221,6 +221,7 @@
+   void *result = malloc (size ? size : 1);
+   if (result == 0)
+     OUT_OF_MEM();
++
+   return result;
+ }
+ 
+@@ -232,6 +233,8 @@
+   void *result = calloc (size ? size : 1, 1);
+   if (result == 0)
+     OUT_OF_MEM();
++  for(unsigned i = 0; i < size; i++)
++      ((unsigned char *)result)[i] = 0;
+   return result;
+ }
+ 
+diff --exclude '*.o' --exclude '*.bc' -ru vanilla/make-4.2/strcache.c patch/make-4.2/strcache.c
+--- vanilla/make-4.2/strcache.c	2019-12-08 09:40:47.622080163 +0200
++++ patch/make-4.2/strcache.c	2019-12-08 09:41:07.062181901 +0200
+@@ -38,7 +38,7 @@
+ /* The size (in bytes) of each cache buffer.
+    Try to pick something that will map well into the heap.
+    This must be able to be represented by a short int (<=65535).  */
+-#define CACHE_BUFFER_BASE       (8192)
++#define CACHE_BUFFER_BASE       (128)
+ #define CACHE_BUFFER_ALLOC(_s)  ((_s) - (2 * sizeof (size_t)))
+ #define CACHE_BUFFER_OFFSET     (offsetof (struct strcache, buffer))
+ #define CACHE_BUFFER_SIZE(_s)   (CACHE_BUFFER_ALLOC(_s) - CACHE_BUFFER_OFFSET)
+@@ -256,7 +256,7 @@
+ void
+ strcache_init (void)
+ {
+-  hash_init (&strings, 8000, str_hash_1, str_hash_2, str_hash_cmp);
++  hash_init (&strings, 80, str_hash_1, str_hash_2, str_hash_cmp);
+ }
+ 
+
+diff --exclude '*.o' --exclude '*.bc' -ru vanilla/make-4.2/variable.c patch/make-4.2/variable.c
+--- vanilla/make-4.2/variable.c	2019-12-08 09:40:47.622080163 +0200
++++ patch/make-4.2/variable.c	2019-12-08 09:41:07.074181964 +0200
+@@ -162,7 +162,7 @@
+ }
+ 
+ #ifndef VARIABLE_BUCKETS
+-#define VARIABLE_BUCKETS                523
++#define VARIABLE_BUCKETS                120
+ #endif
+ #ifndef PERFILE_VARIABLE_BUCKETS
+ #define PERFILE_VARIABLE_BUCKETS        23
