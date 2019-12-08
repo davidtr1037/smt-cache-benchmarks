@@ -13,7 +13,7 @@ FLAGS+="-allocate-determ "
 FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-allocate-determ-size=4000 "
 
-BC_FILE=${CURRENT_DIR}/test_driver.bc
+BC_FILE=${CURRENT_DIR}/build/test_driver.bc
 DEPTH=0
 K_CONTEXT=4
 
@@ -35,14 +35,14 @@ function run_with_rebase {
     ${KLEE} ${FLAGS} \
         -use-sym-addr \
         -use-rebase \
-        -use-kcontext=${K} \
+        -use-kcontext=${K_CONTEXT} \
         -use-global-id=1 \
         -use-recursive-rebase=1 \
         -reuse-arrays=0 \
         -reuse-segments=1 \
         -use-context-resolve=1 \
         -rebase-reachable=0 \
-        -reachability-depth=${RD} \
+        -reachability-depth=${DEPTH} \
         -use-batch-rebase=0 \
         -use-ahead-rebase=1 \
         ${BC_FILE} ${SIZE}
