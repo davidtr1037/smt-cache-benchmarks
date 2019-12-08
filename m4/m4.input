@@ -1,0 +1,7 @@
+define(‘h’, ‘l’)
+define(‘A’, ‘l’)
+define(‘n’, 2)
+define(‘P’, 2)
+?
+?
+ifelse(?, ‘l’, ifelse(?,P, eval(1 + n)) ,‘failed’)
