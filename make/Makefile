@@ -1,4 +1,4 @@
-include ../../Makefile.config
+include ../Makefile.config
 
 SRC=$(shell realpath ./make-4.2)
 BUILD=$(shell realpath ./build)
