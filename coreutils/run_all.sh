@@ -4,7 +4,7 @@ CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ../config.sh
 
 UTILS_FILE=${CURRENT_DIR}/utils.txt
-SANDBOX_DIR=/tmp
+SANDBOX_DIR=/tmp/env
 SANDBOX=${SANDBOX_DIR}/sandbox
 
 ARGS="--sym-args 0 1 10 --sym-args 0 2 2 --sym-files 1 8 --sym-stdin 8 --sym-stdout"
@@ -28,7 +28,8 @@ FLAGS+="--switch-type=internal "
 FLAGS+="--simplify-sym-indices "
 
 function reset {
-    rm -rf ${SANDBOX}
+    rm -rf ${SANDBOX_DIR}
+    mkdir -p ${SANDBOX_DIR}
     tar xf ${CURRENT_DIR}/sandbox.tgz -C ${SANDBOX_DIR}
 }
 
