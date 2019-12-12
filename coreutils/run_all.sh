@@ -63,8 +63,7 @@ function run_all {
     for name in $(cat utils.txt); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
         run_klee ${bc_file}
-        echo "status: $?"
-        break
+        echo "${name}: status = $?"
     done
 }
 
