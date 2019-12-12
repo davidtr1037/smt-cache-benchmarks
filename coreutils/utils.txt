@@ -34,11 +34,9 @@ getlimits
 ginstall
 groups
 head
-hostid
 id
 join
 kill
-libstdbuf.so
 link
 ln
 logname
@@ -58,7 +56,6 @@ numfmt
 od
 paste
 pathchk
-pinky
 pr
 printenv
 printf
@@ -79,14 +76,11 @@ shred
 shuf
 sleep
 sort
-split
-stat
 stdbuf
 stty
 sum
 sync
 tac
-tail
 tee
 test
 timeout
@@ -102,8 +96,6 @@ uniq
 unlink
 uptime
 users
-vdir
 wc
 whoami
-who
 yes
