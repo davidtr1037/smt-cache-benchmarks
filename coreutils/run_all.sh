@@ -4,6 +4,7 @@ CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ../config.sh
 
 UTILS_FILE=${CURRENT_DIR}/utils.txt
+LOG_FILE=${CURRENT_DIR}/status.log
 SANDBOX_DIR=/tmp/env
 SANDBOX=${SANDBOX_DIR}/sandbox
 
@@ -53,7 +54,7 @@ function run_with_symaddr {
 }
 
 function run_all {
-    log_file=${CURRENT_DIR}/out.log
+    log_file=${LOG_FILE}
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
