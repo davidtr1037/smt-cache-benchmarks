@@ -60,10 +60,11 @@ function run_with_symaddr {
 }
 
 function run_all {
+    log_file=${CURRENT_DIR}/out.log
     for name in $(cat utils.txt); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
         run_klee ${bc_file}
-        echo "${name}: status = $?"
+        echo "${name}: status = $?" >> ${log_file}
     done
 }
 
