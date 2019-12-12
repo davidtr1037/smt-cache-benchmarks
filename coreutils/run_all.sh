@@ -35,8 +35,10 @@ function reset {
 
 function run_klee {
     bc_file=$1
+    name=$2
     reset
     ${VANILLA_KLEE} ${FLAGS} \
+        -output-dir=${CURRENT_DIR}/build/src/klee-out-${name} \
         ${bc_file} ${ARGS}
 }
 
@@ -55,7 +57,7 @@ function run_all {
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_klee ${bc_file}
+        run_klee ${bc_file} ${name}
         echo "${name}: status = $?" >> ${log_file}
     done
 }
