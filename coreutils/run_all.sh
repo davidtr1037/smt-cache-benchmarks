@@ -3,8 +3,10 @@
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ../config.sh
 
+UTILS_FILE=${CURRENT_DIR}/utils.txt
 SANDBOX_DIR=/tmp
 SANDBOX=${SANDBOX_DIR}/sandbox
+
 ARGS="--sym-args 0 1 10 --sym-args 0 2 2 --sym-files 1 8 --sym-stdin 8 --sym-stdout"
 MAX_TIME=3600
 MAX_MEMORY=4000
@@ -12,7 +14,7 @@ MAX_MEMORY=4000
 FLAGS+="--max-memory=${MAX_MEMORY} "
 FLAGS+="--max-time=${MAX_TIME} "
 FLAGS+="--search=dfs "
-FLAGS+="--use-forked-solver=0 "
+FLAGS+="--use-forked-solver=1 "
 FLAGS+="--disable-inlining "
 FLAGS+="--optimize "
 FLAGS+="--libc=uclibc "
@@ -49,7 +51,8 @@ function run_with_symaddr {
 
 function run_all {
     log_file=${CURRENT_DIR}/out.log
-    for name in $(cat utils.txt); do
+    rm -rf ${log_file}
+    for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
         run_klee ${bc_file}
         echo "${name}: status = $?" >> ${log_file}
