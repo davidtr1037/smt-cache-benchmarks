@@ -14,10 +14,12 @@ MAX_MEMORY=4000
 
 FLAGS+="--max-memory=${MAX_MEMORY} "
 FLAGS+="--max-time=${MAX_TIME} "
+FLAGS+="--allocate-determ "
+FLAGS+="--allocate-determ-start-address=0x0 "
+FLAGS+="--allocate-determ-size=4000 "
 FLAGS+="--search=dfs "
 FLAGS+="--use-forked-solver=1 "
 FLAGS+="--disable-inlining "
-FLAGS+="--optimize "
 FLAGS+="--libc=uclibc "
 FLAGS+="--posix-runtime "
 FLAGS+="--external-calls=all "
@@ -37,15 +39,21 @@ function reset {
 function run_klee {
     bc_file=$1
     name=$2
+    max_inst=$3
     reset
     ${VANILLA_KLEE} ${FLAGS} \
         -output-dir=${CURRENT_DIR}/build/src/klee-out-${name} \
+        -max-instructions=${max_inst} \
         ${bc_file} ${ARGS} &> /dev/null
 }
 
 function run_symaddr {
     bc_file=$1
+    name=$2
+    max_inst=$3
     ${KLEE} ${FLAGS} \
+        -output-dir=${CURRENT_DIR}/build/src/mm-out-${name} \
+        -max-instructions=${max_inst} \
         -use-sym-addr \
         -use-rebase \
         -use-global-id=1 \
@@ -58,7 +66,7 @@ function run_klee_all {
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_klee ${bc_file} ${name}
+        run_klee ${bc_file} ${name} 0
         echo "${name}: status = $?" >> ${log_file}
     done
 }
