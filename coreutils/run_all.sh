@@ -76,7 +76,7 @@ function run_symaddr_all {
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_symaddr ${bc_file} ${name}
+        run_symaddr ${bc_file} ${name} 0
         echo "${name}: status = $?" >> ${log_file}
     done
 }
