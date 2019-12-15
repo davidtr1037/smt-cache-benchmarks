@@ -40,10 +40,10 @@ function run_klee {
     reset
     ${VANILLA_KLEE} ${FLAGS} \
         -output-dir=${CURRENT_DIR}/build/src/klee-out-${name} \
-        ${bc_file} ${ARGS}
+        ${bc_file} ${ARGS} &> /dev/null
 }
 
-function run_with_symaddr {
+function run_symaddr {
     bc_file=$1
     ${KLEE} ${FLAGS} \
         -use-sym-addr \
@@ -53,7 +53,7 @@ function run_with_symaddr {
         ${bc_file} ${ARGS}
 }
 
-function run_all {
+function run_klee_all {
     log_file=${LOG_FILE}
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
@@ -63,6 +63,17 @@ function run_all {
     done
 }
 
+function run_symaddr_all {
+    log_file=${LOG_FILE}
+    rm -rf ${log_file}
+    for name in $(cat ${UTILS_FILE}); do
+        bc_file=${CURRENT_DIR}/build/src/${name}.bc
+        run_symaddr ${bc_file} ${name}
+        echo "${name}: status = $?" >> ${log_file}
+    done
+}
+
 ulimit -s unlimited
 
-run_all
+run_klee_all
+run_symaddr_all
