@@ -34,6 +34,7 @@ getlimits
 ginstall
 groups
 head
+hostid
 id
 join
 kill
@@ -56,6 +57,7 @@ numfmt
 od
 paste
 pathchk
+pinky
 pr
 printenv
 printf
@@ -81,6 +83,7 @@ stty
 sum
 sync
 tac
+tail
 tee
 test
 timeout
@@ -97,5 +100,6 @@ unlink
 uptime
 users
 wc
+who
 whoami
 yes
