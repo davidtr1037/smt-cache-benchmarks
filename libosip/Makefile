@@ -1,7 +1,7 @@
 include ../Makefile.config
 SRC_PATH=$(shell realpath ./libosip2-5.0.0/)
 
-INCLUDES=-I $(KLEE_PATH)/include -I $(SRC_PATH)/include
+INCLUDES=-I $(KLEE_SRC)/include -I $(SRC_PATH)/include
 DEFINES=
 
 COVERAGE_CFLAGS=-fprofile-arcs -ftest-coverage
@@ -41,10 +41,10 @@ $(BUILD_DIR)/src/osipparser2/.libs/libosipparser2.a: $(BUILD_DIR)
 	make -C ${BUILD_DIR} -j4
 
 $(TARGET_GCOV): main.gcov.o $(GCOV_BUILD_DIR)/src/osipparser2/.libs/libosipparser2.a
-	$(CC) $(CFLAGS) $(LDFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_LDFLAGS) -L$(KLEE_BUILD)/lib/ $^ -o $@ -lkleeRuntest
+	$(CC) $(CFLAGS) $(LDFLAGS) $(COVERAGE_CFLAGS) $(COVERAGE_LDFLAGS) $^ -o $@
 
 $(TARGET): main.o $(BUILD_DIR)/src/osipparser2/.libs/libosipparser2.a 
-	$(WLLVM) $(CFLAGS) $(LDFLAGS) -L$(KLEE_BUILD)/lib/ $^ -o $@ -lkleeRuntest
+	$(WLLVM) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(BC_TARGET): $(TARGET) 
 	$(EXTRACT_BC) $< -o $@
@@ -52,17 +52,4 @@ $(BC_TARGET): $(TARGET)
 	$(LLVM_DIS) $@
 
 clean:
-	rm -rf $(TARGET) $(TARGET_GCOV) $(BC_TARGET) *.o *.bc *.ll *.gcno *.gcda ${BUILD_DIR} ${GCOV_BUILD_DIR}
-
-col-klee-out-%:
-	rm -rf $@
-	klee -max-instructions=4136455057 -no-output -search=dfs -pta-target=osip_message_parse:45 -use-pta-mode=$(@:col-klee-out-%=%) -output-dir=$@ -compute-colours -create-unique-as=1 -use-strong-updates=0 test_driver.bc 20
-
-%.colours: col-klee-out-%
-	cat $</colours | sort -u -k 1,2 > $@
-
-%.transitions: col-klee-out-%
-	awk '{print $0}' $</*.colourTransitions | sort |  datamash -g1 count 1 > $@
-
-colours: static.colours symbolic.colours
-transitions: static.transitions symbolic.transitions
+	rm -rf $(TARGET) $(TARGET_GCOV) $(BC_TARGET) *.o *.bc *.ll *.gcno *.gcda $(BUILD_DIR) $(GCOV_BUILD_DIR)

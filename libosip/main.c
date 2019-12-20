@@ -8,6 +8,10 @@
 #include <osipparser2/osip_message.h>
 #include <osipparser2/osip_parser.h>
 
+void klee_make_symbolic(void *p, size_t n, const char *name) {
+
+}
+
 int main(int argc, char *argv[]) {
     char *buf = NULL;
 
