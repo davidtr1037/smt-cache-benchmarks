@@ -48,6 +48,13 @@ function run_with_rebase {
         ${BC_FILE} ${SIZE}
 }
 
+function run_context_test {
+    for i in {1..4}; do
+        K_CONTEXT=${i}
+        run_with_rebase
+    done
+}
+
 ulimit -s unlimited
 
 run_klee
