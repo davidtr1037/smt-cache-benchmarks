@@ -51,6 +51,13 @@ function run_with_rebase {
         ${BC_FILE} ${ARGS}
 }
 
+function run_context_test {
+    for i in {0..4}; do
+        K_CONTEXT=${i}
+        run_with_rebase
+    done
+}
+
 function run_split {
     ${KLEE} ${FLAGS} \
         -use-sym-addr \

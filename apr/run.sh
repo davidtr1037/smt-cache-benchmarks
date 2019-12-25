@@ -49,7 +49,7 @@ function run_with_rebase {
 }
 
 function run_context_test {
-    for i in {1..4}; do
+    for i in {0..4}; do
         K_CONTEXT=${i}
         run_with_rebase
     done
