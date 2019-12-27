@@ -58,7 +58,7 @@ function run_context_test {
     done
 }
 
-function run_with_split {
+function run_split {
     ${KLEE} ${FLAGS} \
         -use-sym-addr \
         -split-objects \
