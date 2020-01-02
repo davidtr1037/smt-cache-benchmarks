@@ -3,6 +3,8 @@
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
 
+MAX_TIME=86400
+
 FLAGS=""
 FLAGS+="-max-memory=8000 "
 FLAGS+="-libc=uclibc "
@@ -26,6 +28,7 @@ function run_klee {
 
 function run_klee_smm {
     ${KLEE_SMM} ${FLAGS} \
+        -max-time=${MAX_TIME} \
         -pts \
         -flat-memory \
         ${BC_FILE} ${SIZE}
