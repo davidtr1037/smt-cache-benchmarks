@@ -16,6 +16,8 @@ BC_FILE=${CURRENT_DIR}/test_driver.bc
 
 DEPTH=0
 K_CONTEXT=4
+SPLIT_THRESHOLD=300
+PARTITION=128
 
 function run_klee {
     ${VANILLA_KLEE} \
@@ -53,6 +55,15 @@ function run_context_test {
         K_CONTEXT=${i}
         run_with_rebase
     done
+}
+
+function run_split {
+    ${KLEE} ${FLAGS} \
+        -use-sym-addr \
+        -split-objects \
+        -split-threshold=${SPLIT_THRESHOLD} \
+        -partition-size=${PARTITION} \
+        ${BC_FILE} ${ARGS}
 }
 
 ulimit -s unlimited
