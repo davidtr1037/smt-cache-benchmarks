@@ -3,6 +3,7 @@
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
 
+MAX_TIME=86400
 MAX_MEMORY=8000
 
 FLAGS=""
@@ -34,6 +35,7 @@ function run_klee {
 
 function run_klee_smm {
     ${KLEE_SMM} ${FLAGS} \
+        -max-time=${MAX_TIME} \
         -pts \
         -flat-memory \
         ${BC_FILE} ${ARGS}
@@ -54,6 +56,13 @@ function run_with_rebase {
         -use-batch-rebase=0 \
         -use-ahead-rebase=1 \
         ${BC_FILE} ${ARGS}
+}
+
+function run_context_test {
+    for i in {0..4}; do
+        K_CONTEXT=${i}
+        run_with_rebase
+    done
 }
 
 function run_split {
