@@ -3,8 +3,10 @@
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
 
+MAX_MEMORY=8000
+
 FLAGS=""
-FLAGS+="-max-memory=8000 "
+FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-libc=uclibc "
 FLAGS+="-posix-runtime "
 FLAGS+="-search=dfs "
@@ -55,8 +57,8 @@ function run_split {
     ${KLEE} ${FLAGS} \
         -use-sym-addr \
         -split-objects \
-        -split-threshold=2000 \
-        -partition-size=128 \
+        -split-threshold=${SPLIT_THRESHOLD} \
+        -partition-size=${PARTITION} \
         ${BC_FILE} ${ARGS}
 }
 
