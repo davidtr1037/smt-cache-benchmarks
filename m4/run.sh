@@ -6,10 +6,10 @@ source ${CURRENT_DIR}/../config.sh
 MAX_MEMORY=8000
 
 FLAGS=""
-FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-libc=uclibc "
 FLAGS+="-posix-runtime "
 FLAGS+="-search=dfs "
+FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-use-forked-solver=0 "
 FLAGS+="-only-output-states-covering-new "
 FLAGS+="-switch-type=internal "
@@ -20,6 +20,8 @@ FLAGS+="-allocate-determ-size=4000 "
 
 DEPTH=0
 K_CONTEXT=4
+SPLIT_THRESHOLD=300
+PARTITION=128
 
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
