@@ -6,6 +6,9 @@
 #include "klee/klee.h"
 
 
+void klee_make_symbolic(void* p1, size_t i, const char* p) {}
+void klee_assume(uintptr_t i) {}
+
 int populate_db(sqlite3* db, int triggers_number) {
     char* sql = malloc(100);
     char *err_msg;
