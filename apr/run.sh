@@ -3,10 +3,13 @@
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
 
+MAX_MEMORY=8000
+
 FLAGS=""
 FLAGS+="-use-forked-solver=0 "
 FLAGS+="-libc=uclibc "
 FLAGS+="-search=dfs "
+FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-allocate-determ "
 FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-only-output-states-covering-new "
@@ -16,6 +19,8 @@ BC_FILE=${CURRENT_DIR}/test_driver.bc
 
 DEPTH=0
 K_CONTEXT=4
+SPLIT_THRESHOLD=300
+PARTITION=128
 
 function run_klee {
     ${VANILLA_KLEE} \
@@ -52,6 +57,22 @@ function run_context_test {
     for i in {0..4}; do
         K_CONTEXT=${i}
         run_with_rebase
+    done
+}
+
+function run_split {
+    ${KLEE} ${FLAGS} \
+        -use-sym-addr \
+        -split-objects \
+        -split-threshold=${SPLIT_THRESHOLD} \
+        -partition-size=${PARTITION} \
+        ${BC_FILE} ${ARGS}
+}
+
+function run_split_all {
+    sizes=(16 32 64 128 256 512)
+    for size in ${sizes[@]}; do
+        PARTITION=${size} run_split
     done
 }
 
