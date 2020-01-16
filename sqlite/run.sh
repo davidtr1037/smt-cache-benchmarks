@@ -2,13 +2,13 @@
 
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
+source ${CURRENT_DIR}/../common.sh
 
 MAX_TIME=86400
 MAX_MEMORY=8000
 
 FLAGS=""
 FLAGS+="-libc=uclibc "
-FLAGS+="-search=dfs "
 FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-use-forked-solver=0 "
 FLAGS+="-only-output-states-covering-new "
@@ -25,12 +25,16 @@ PARTITION=128
 SIZE=15
 
 function run_klee {
+    search=$1
     ${VANILLA_KLEE} ${FLAGS} \
+        ${search} \
         ${BC_FILE} ${SIZE}
 }
 
 function run_klee_smm {
+    search=$1
     ${KLEE_SMM} ${FLAGS} \
+        ${search} \
         -max-time=${MAX_TIME} \
         -pts \
         -flat-memory \
@@ -38,7 +42,9 @@ function run_klee_smm {
 }
 
 function run_with_rebase {
+    search=$1
     ${KLEE} ${FLAGS} \
+        ${search} \
         -use-sym-addr \
         -use-rebase \
         -use-kcontext=${K_CONTEXT} \
@@ -50,7 +56,7 @@ function run_with_rebase {
         -rebase-reachable=0 \
         -reachability-depth=${DEPTH} \
         -use-batch-rebase=0 \
-        -use-ahead-rebase=1 \
+        -use-ahead-rebase=0 \
         ${BC_FILE} ${SIZE}
 }
 
@@ -63,6 +69,7 @@ function run_context_test {
 
 function run_split {
     ${KLEE} ${FLAGS} \
+        -search=dfs \
         -use-sym-addr \
         -split-objects \
         -split-threshold=${SPLIT_THRESHOLD} \
