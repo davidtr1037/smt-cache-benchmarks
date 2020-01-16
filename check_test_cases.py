@@ -24,13 +24,16 @@ def get_obj_id(lines, obj_name):
                 return obj_id
     return None
 
+def decode_data(data):
+    return eval('"%s"' % data)
+
 def get_obj_data(lines, obj_id):
     for l in lines:
         match = OBJ_DATA.findall(l)
         if len(match) != 0:
             _id, data = match[0]
             if _id == obj_id:
-                return data
+                return decode_data(data)
     return None
 
 def get_data(f, obj_name):
@@ -40,7 +43,7 @@ def get_data(f, obj_name):
     return data
 
 def get_test_cases(out_dir):
-    print "%r" % out_dir
+    print out_dir
     files = glob(os.path.join(out_dir, "*.ktest"))
     cases = set()
     for f in files:
