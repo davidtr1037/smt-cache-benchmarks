@@ -2,13 +2,13 @@
 
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
+source ${CURRENT_DIR}/../common.sh
 
 MAX_MEMORY=8000
 
 FLAGS=""
 FLAGS+="-libc=uclibc "
 FLAGS+="-posix-runtime "
-FLAGS+="-search=dfs "
 FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-use-forked-solver=0 "
 FLAGS+="-only-output-states-covering-new "
@@ -27,19 +27,26 @@ BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
 
 function run_klee {
-    ${VANILLA_KLEE} ${FLAGS} \
+    search=$1
+    ${VANILLA_KLEE} \
+        ${search} \
+        ${FLAGS} \
         ${BC_FILE} ${ARGS}
 }
 
 function run_klee_smm {
+    search=$1
     ${KLEE_SMM} ${FLAGS} \
+        ${search} \
         -pts \
         -flat-memory \
         ${BC_FILE} ${ARGS}
 }
 
 function run_with_rebase {
+    search=$1
     ${KLEE} ${FLAGS} \
+        ${search} \
         -use-sym-addr \
         -use-rebase \
         -use-global-id=1 \
@@ -51,7 +58,7 @@ function run_with_rebase {
         -rebase-reachable=0 \
         -reachability-depth=${DEPTH} \
         -use-batch-rebase=0 \
-        -use-ahead-rebase=1 \
+        -use-ahead-rebase=0 \
         ${BC_FILE} ${ARGS}
 }
 
@@ -64,6 +71,7 @@ function run_context_test {
 
 function run_split {
     ${KLEE} ${FLAGS} \
+        -search=dfs \
         -use-sym-addr \
         -split-objects \
         -split-threshold=${SPLIT_THRESHOLD} \
