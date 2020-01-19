@@ -19,6 +19,7 @@ FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-allocate-determ-size=4000 "
 
 DEPTH=0
+CONTEXT_RESOLVE=1
 K_CONTEXT=4
 SPLIT_THRESHOLD=300
 PARTITION=128
@@ -54,7 +55,7 @@ function run_with_rebase {
         -reuse-arrays=0 \
         -reuse-segments=1 \
         -use-kcontext=${K_CONTEXT} \
-        -use-context-resolve=1 \
+        -use-context-resolve=${CONTEXT_RESOLVE} \
         -rebase-reachable=0 \
         -reachability-depth=${DEPTH} \
         -use-batch-rebase=0 \
