@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     LIBXML_TEST_VERSION;
     xmlInitParser();
-    htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt(s, sizeof(s));
+    htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt(s, size);
     if (ctxt == NULL) {
         return 1;
     }
