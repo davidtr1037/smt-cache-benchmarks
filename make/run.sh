@@ -21,7 +21,9 @@ FLAGS+="-switch-type=internal "
 #FLAGS+="-all-external-warnings "
 
 DEPTH=0
+CONTEXT_RESOLVE=1
 K_CONTEXT=4
+REUSE=1
 PARTITION=128
 SPLIT_THRESHOLD=300
 
@@ -56,8 +58,8 @@ function run_with_rebase {
         -use-global-id=1 \
         -use-recursive-rebase=1 \
         -reuse-arrays=0 \
-        -reuse-segments=1 \
-        -use-context-resolve=1 \
+        -reuse-segments=${REUSE} \
+        -use-context-resolve=${CONTEXT_RESOLVE} \
         -rebase-reachable=0 \
         -reachability-depth=${DEPTH} \
         -use-batch-rebase=0 \
