@@ -42,12 +42,12 @@ def get_data(f, obj_name):
     data = get_obj_data(lines, obj_id)
     return data
 
-def get_test_cases(out_dir):
+def get_test_cases(out_dir, name):
     print out_dir
     files = glob(os.path.join(out_dir, "*.ktest"))
     cases = set()
     for f in files:
-        data = get_data(f, "stdin")
+        data = get_data(f, name)
         cases.add(data)
     return cases
 
@@ -67,9 +67,10 @@ def check_suites(suites):
 def main():
     suites = []
     result_dir = sys.argv[1]
+    name = sys.argv[2]
     dirs = glob(os.path.join(result_dir, "klee-out-*"))
     for d in dirs:
-        s = get_test_cases(d)
+        s = get_test_cases(d, name)
         suites.append(s)
 
     if check_suites(suites):
