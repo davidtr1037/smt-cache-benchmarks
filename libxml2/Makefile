@@ -1,31 +1,45 @@
 include ../Makefile.config
+
 SRC_PATH=$(shell realpath ./libxml2-2.9.8)
 
 INCLUDES=-I $(KLEE_SRC)/include -I $(SRC_PATH)/include
 DEFINES=
 
-CFLAGS=$(INCLUDES) $(DEFINES)
+CFLAGS=$(INCLUDES) $(DEFINES) -g
 LDFLAGS=-lm -lz
 
 $(SRC_PATH): $(SRC_PATH).tar.gz
 	tar -xf $^
 
-BUILD_DIR=build
+BUILD=build
+BUILD_GCOV=build_gcov
+CONF_FLAGS=--without-iconv
 
 TARGET=test_driver
 BC_TARGET=test_driver.bc
+TARGET_GCOV=test_driver_gcov
 
 %.o: %.c $(SRC_PATH)
 	$(WLLVM) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR): $(SRC_PATH)
-	mkdir -p ${BUILD_DIR}
-	cd ${BUILD_DIR}; $(SRC_PATH)/configure --without-iconv CC=$(WLLVM) CFLAGS="-g"
+%.gcov.o: %.c $(SRC_PATH)
+	$(CC) -c $(CFLAGS) $(COVERAGE_CFLAGS) $< -o $@
 
-$(BUILD_DIR)/.libs/libxml2.a: $(BUILD_DIR)
-	make -C ${BUILD_DIR} -j4
+$(BUILD): $(SRC_PATH)
+	mkdir -p $(BUILD)
+	cd $(BUILD); $(SRC_PATH)/configure $(CONF_FLAGS) CC=$(WLLVM) CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"; cd -
 
-$(TARGET): main.o $(BUILD_DIR)/.libs/libxml2.a 
+$(BUILD_GCOV): $(SRC_PATH)
+	mkdir -p $(BUILD_GCOV)
+	cd $(BUILD_GCOV); $(SRC_PATH)/configure $(CONF_FLAGS) CC=gcc CFLAGS="$(COVERAGE_CFLAGS)" LDFLAGS="$(COVERAGE_LDFLAGS)"; cd -
+
+$(BUILD)/.libs/libxml2.a: $(BUILD)
+	make -C $(BUILD) -j4
+
+$(BUILD_GCOV)/.libs/libxml2.a: $(BUILD_GCOV)
+	make -C $(BUILD_GCOV) -j4
+
+$(TARGET): main.o $(BUILD)/.libs/libxml2.a
 	$(WLLVM) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(BC_TARGET): $(TARGET) 
@@ -33,5 +47,8 @@ $(BC_TARGET): $(TARGET)
 	$(OPT) -mem2reg $@ -o $@
 	$(LLVM_DIS) $@
 
+$(TARGET_GCOV): main.gcov.o $(BUILD_GCOV)/.libs/libxml2.a
+	$(CC) $(CFLAGS) $(COVERAGE_CFLAGS) $^ $(COVERAGE_LDFLAGS) $(LDFLAGS) -o $@
+
 clean:
-	rm -rf $(TARGET) $(BC_TARGET) *.o *.bc *.ll *.gcno *.gcda $(BUILD_DIR)
+	rm -rf $(TARGET) $(BC_TARGET) $(TARGET_GCOV) *.o *.bc *.ll *.gcno *.gcda $(BUILD) $(BUILD_GCOV)
