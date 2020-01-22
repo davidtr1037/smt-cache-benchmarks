@@ -5,9 +5,9 @@ N=3
 function run_all {
     for ((n=0;n<${N};n++)); do
         echo "iteration ${n}"
-        run_with_rebase "-search=dfs"
-        run_with_rebase "-search=bfs"
-        run_with_rebase ""
+        CONTEXT_RESOLVE=1 K_CONTEXT=4 REUSE=1 run_with_rebase "-search=dfs"
+        CONTEXT_RESOLVE=1 K_CONTEXT=4 REUSE=1 run_with_rebase "-search=bfs"
+        CONTEXT_RESOLVE=1 K_CONTEXT=4 REUSE=1 run_with_rebase ""
     done
 }
 
