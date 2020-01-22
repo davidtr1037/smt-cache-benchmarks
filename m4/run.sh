@@ -71,6 +71,13 @@ function run_split {
         ${BC_FILE} ${ARGS}
 }
 
+function run_split_all {
+    sizes=(16 32 64 128 256 512)
+    for size in ${sizes[@]}; do
+        PARTITION=${size} run_split
+    done
+}
+
 ulimit -s unlimited
 
 run_klee
