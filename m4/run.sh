@@ -25,6 +25,7 @@ PARTITION=128
 
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
+ARGS_SPLIT="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4_2.input -G"
 
 function run_klee {
     ${VANILLA_KLEE} ${FLAGS} \
