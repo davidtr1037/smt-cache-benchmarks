@@ -19,7 +19,6 @@ function run_reuse {
 }
 
 function run_context_resolve {
-    N=1
     for ((n=0;n<${N};n++)); do
         echo "iteration ${n}"
         CONTEXT_RESOLVE=1 K_CONTEXT=4 REUSE=0 run_with_rebase "-search=dfs"
@@ -27,7 +26,6 @@ function run_context_resolve {
 }
 
 function run_no_opt {
-    N=1
     for ((n=0;n<${N};n++)); do
         echo "iteration ${n}"
         CONTEXT_RESOLVE=0 REUSE=0 run_with_rebase "-search=dfs"
