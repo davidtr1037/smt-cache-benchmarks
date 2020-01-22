@@ -75,7 +75,7 @@ function run_split {
         -split-objects \
         -split-threshold=${SPLIT_THRESHOLD} \
         -partition-size=${PARTITION} \
-        ${BC_FILE} ${ARGS}
+        ${BC_FILE} ${SIZE}
 }
 
 function run_split_all {

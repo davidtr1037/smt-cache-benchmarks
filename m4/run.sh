@@ -27,6 +27,7 @@ PARTITION=128
 
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
+ARGS_SPLIT="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4_2.input -G"
 
 function run_klee {
     search=$1
@@ -79,6 +80,13 @@ function run_split {
         -split-threshold=${SPLIT_THRESHOLD} \
         -partition-size=${PARTITION} \
         ${BC_FILE} ${ARGS}
+}
+
+function run_split_all {
+    sizes=(16 32 64 128 256 512)
+    for size in ${sizes[@]}; do
+        PARTITION=${size} run_split
+    done
 }
 
 ulimit -s unlimited
