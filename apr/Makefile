@@ -36,12 +36,12 @@ $(BUILD_GCOV): $(SRC_PATH)
 $(BUILD)/.libs/libapr-1.a: $(BUILD)
 	cd $(BUILD); make -C $(BUILD) -j4; cd -
 
-$(TARGET): $(BUILD) int_apr_hashtable_x2.o $(BUILD)/.libs/libapr-1.a
-	$(WLLVM) $(CFLAGS) $(LDFLAGS) int_apr_hashtable_x2.o $(BUILD)/.libs/libapr-1.a -o $@
+$(TARGET): $(BUILD) main.o $(BUILD)/.libs/libapr-1.a
+	$(WLLVM) $(CFLAGS) $(LDFLAGS) main.o $(BUILD)/.libs/libapr-1.a -o $@
 
-$(TARGET_GCOV): $(BUILD_GCOV) int_apr_hashtable_x2.gcov.o
+$(TARGET_GCOV): $(BUILD_GCOV) main.gcov.o
 	make -C $(BUILD_GCOV) -j4
-	$(CC) $(CFLAGS) $(COVERAGE_CFLAGS) $(LDFLAGS) $(COVERAGE_LDFLAGS) int_apr_hashtable_x2.gcov.o $(BUILD_GCOV)/.libs/libapr-1.a -o $@
+	$(CC) $(CFLAGS) $(COVERAGE_CFLAGS) $(LDFLAGS) $(COVERAGE_LDFLAGS) main.gcov.o $(BUILD_GCOV)/.libs/libapr-1.a -o $@
 
 $(BC_TARGET): $(TARGET) 
 	$(EXTRACT_BC) $< -o $@

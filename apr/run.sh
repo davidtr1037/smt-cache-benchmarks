@@ -17,13 +17,6 @@ FLAGS+="-only-output-states-covering-new "
 SIZE=15
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
-DEPTH=0
-CONTEXT_RESOLVE=1
-K_CONTEXT=4
-REUSE=1
-SPLIT_THRESHOLD=300
-PARTITION=128
-
 function run_klee {
     search=$1
     ${VANILLA_KLEE} \
@@ -32,61 +25,64 @@ function run_klee {
         ${BC_FILE} ${SIZE}
 }
 
-function run_klee_smm {
-    search=$1
-    ${KLEE_SMM} \
-        ${search} \
-        ${FLAGS} \
-        -pts \
-        -flat-memory \
-        ${BC_FILE} ${SIZE}
-}
-
-function run_with_rebase {
+function run_stats {
     search=$1
     ${KLEE} ${FLAGS} \
         ${search} \
         -use-sym-addr \
-        -use-rebase \
         -use-global-id=1 \
-        -use-recursive-rebase=1 \
-        -reuse-arrays=0 \
-        -reuse-segments=${REUSE} \
-        -use-context-resolve=${CONTEXT_RESOLVE} \
-        -use-kcontext=${K_CONTEXT} \
-        -rebase-reachable=0 \
-        -reachability-depth=${DEPTH} \
-        -use-batch-rebase=0 \
-        -use-ahead-rebase=0 \
+        -collect-query-stats=1 \
         ${BC_FILE} ${SIZE}
 }
 
-function run_context_test {
-    for i in {0..4}; do
-        K_CONTEXT=${i}
-        run_with_rebase
-    done
-}
-
-function run_split {
+function run_klee_qc_only {
+    search=$1
     ${KLEE} ${FLAGS} \
-        -search=dfs \
+        ${search} \
         -use-sym-addr \
-        -split-objects \
-        -split-threshold=${SPLIT_THRESHOLD} \
-        -partition-size=${PARTITION} \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
         ${BC_FILE} ${SIZE}
 }
 
-function run_split_all {
-    sizes=(16 32 64 128 256 512)
-    for size in ${sizes[@]}; do
-        PARTITION=${size} run_split
-    done
+function run_klee {
+    search=$1
+    ${KLEE} ${FLAGS} \
+        ${search} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        ${BC_FILE} ${SIZE}
 }
 
-ulimit -s unlimited
+function run_cache_qc_only {
+    search=$1
+    ${KLEE} ${FLAGS} \
+        ${search} \
+        -use-sym-addr \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${SIZE}
+}
 
+function run_cache {
+    search=$1
+    ${KLEE} ${FLAGS} \
+        ${search} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${SIZE}
+}
+
+run_stats
+run_klee_qc_only
+run_cache_qc_only
 run_klee
-run_klee_smm
-run_with_rebase
+run_cache
