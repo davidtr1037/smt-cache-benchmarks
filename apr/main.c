@@ -36,22 +36,20 @@ void symbolic_lookup(apr_hash_t *ht) {
 }
 
 int main(int argc, const char *argv[]) {
-    //apr_pool_t *mp;
-    //apr_hash_t *ht;
-        
     apr_initialize();
-    //apr_pool_create(&mp, NULL);
-    //ht = apr_hash_make(mp);
+
+    apr_pool_t *mp;
+    apr_hash_t *ht;
+    apr_pool_create(&mp, NULL);
+    ht = apr_hash_make(mp);
 
     for (unsigned int i = 0; i < 2; i++) {
-        apr_pool_t *mp;
-        apr_hash_t *ht;
-
-        apr_pool_create(&mp, NULL);
-        ht = apr_hash_make_custom(mp, custom_hash);
-
+        //apr_pool_t *mp;
+        //apr_hash_t *ht;
+        //apr_pool_create(&mp, NULL);
+        //ht = apr_hash_make_custom(mp, custom_hash);
         int* c = malloc(sizeof(*c));
-        *c = 0;
+        *c = i;
         apr_hash_set(ht, c, sizeof(*c),  "A");
         symbolic_lookup(ht);
     }
