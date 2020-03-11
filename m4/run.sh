@@ -18,79 +18,69 @@ FLAGS+="-allocate-determ "
 FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-allocate-determ-size=4000 "
 
-DEPTH=0
-CONTEXT_RESOLVE=1
-K_CONTEXT=4
-REUSE=1
-SPLIT_THRESHOLD=300
-PARTITION=128
-
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
-ARGS="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
-ARGS_SPLIT="-sym-files 1 1 -sym-stdin ${CURRENT_DIR}/m4_2.input -G"
+ARGS="-sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
+
+function run_stats {
+    search=$1
+    ${KLEE} ${FLAGS} \
+        ${search} \
+        -use-sym-addr \
+        -use-global-id=1 \
+        -collect-query-stats=1 \
+        ${BC_FILE} ${ARGS}
+}
+
+function run_klee_qc_only {
+    search=$1
+    ${KLEE} ${FLAGS} \
+        ${search} \
+        -use-sym-addr \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        ${BC_FILE} ${ARGS}
+}
 
 function run_klee {
     search=$1
-    ${VANILLA_KLEE} \
+    ${KLEE} ${FLAGS} \
         ${search} \
-        ${FLAGS} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
         ${BC_FILE} ${ARGS}
 }
 
-function run_klee_smm {
-    search=$1
-    ${KLEE_SMM} ${FLAGS} \
-        ${search} \
-        -pts \
-        -flat-memory \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_with_rebase {
+function run_cache_qc_only {
     search=$1
     ${KLEE} ${FLAGS} \
         ${search} \
         -use-sym-addr \
-        -use-rebase \
-        -use-global-id=1 \
-        -use-recursive-rebase=1 \
-        -reuse-arrays=0 \
-        -reuse-segments=${REUSE} \
-        -use-kcontext=${K_CONTEXT} \
-        -use-context-resolve=${CONTEXT_RESOLVE} \
-        -rebase-reachable=0 \
-        -reachability-depth=${DEPTH} \
-        -use-batch-rebase=0 \
-        -use-ahead-rebase=0 \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
         ${BC_FILE} ${ARGS}
 }
 
-function run_context_test {
-    for i in {0..4}; do
-        K_CONTEXT=${i}
-        run_with_rebase
-    done
-}
-
-function run_split {
+function run_cache {
+    search=$1
     ${KLEE} ${FLAGS} \
-        -search=dfs \
+        ${search} \
         -use-sym-addr \
-        -split-objects \
-        -split-threshold=${SPLIT_THRESHOLD} \
-        -partition-size=${PARTITION} \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
         ${BC_FILE} ${ARGS}
-}
-
-function run_split_all {
-    sizes=(16 32 64 128 256 512)
-    for size in ${sizes[@]}; do
-        PARTITION=${size} run_split
-    done
 }
 
 ulimit -s unlimited
 
+run_stats
+run_klee_qc_only
+run_cache_qc_only
 run_klee
-run_klee_smm
-run_with_rebase
+run_cache
