@@ -17,14 +17,6 @@ FLAGS+="-only-output-states-covering-new "
 SIZE=15
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
-function run_klee {
-    search=$1
-    ${VANILLA_KLEE} \
-        ${search} \
-        ${FLAGS} \
-        ${BC_FILE} ${SIZE}
-}
-
 function run_stats {
     search=$1
     ${KLEE} ${FLAGS} \
