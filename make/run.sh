@@ -20,79 +20,64 @@ FLAGS+="-switch-type=internal "
 #FLAGS+="-allow-external-sym-calls "
 #FLAGS+="-all-external-warnings "
 
-DEPTH=0
-CONTEXT_RESOLVE=1
-K_CONTEXT=4
-REUSE=1
-PARTITION=128
-SPLIT_THRESHOLD=300
-
 BC_FILE=${CURRENT_DIR}/build/make.bc
 ARGS="--sym-files 1 1 -sym-stdin ${CURRENT_DIR}/make.input -r -n -R -f A"
 
-function run_klee {
-    search=$1
-    ${VANILLA_KLEE}
-        ${search} \
-        ${FLAGS} \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_klee_smm {
-    search=$1
-    ${KLEE_SMM} ${FLAGS} \
-        ${search} \
-        -max-time=${MAX_TIME} \
-        -pts \
-        -flat-memory \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_with_rebase {
-    search=$1
+function run_stats {
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
-        -use-rebase \
-        -use-kcontext=${K_CONTEXT} \
         -use-global-id=1 \
-        -use-recursive-rebase=1 \
-        -reuse-arrays=0 \
-        -reuse-segments=${REUSE} \
-        -use-context-resolve=${CONTEXT_RESOLVE} \
-        -rebase-reachable=0 \
-        -reachability-depth=${DEPTH} \
-        -use-batch-rebase=0 \
-        -use-ahead-rebase=0 \
+        -collect-query-stats=1 \
         ${BC_FILE} ${ARGS}
 }
 
-function run_context_test {
-    for i in {0..4}; do
-        K_CONTEXT=${i}
-        run_with_rebase
-    done
-}
-
-function run_split {
+function run_klee_qc_only {
     ${KLEE} ${FLAGS} \
-        -search=dfs \
+        ${SEARCH} \
         -use-sym-addr \
-        -split-objects \
-        -split-threshold=${SPLIT_THRESHOLD} \
-        -partition-size=${PARTITION} \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
         ${BC_FILE} ${ARGS}
 }
 
-function run_split_all {
-    sizes=(16 32 64 128 256 512)
-    for size in ${sizes[@]}; do
-        PARTITION=${size} run_split
-    done
+function run_klee {
+    ${KLEE} ${FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        ${BC_FILE} ${ARGS}
+}
+
+function run_cache_qc_only {
+    ${KLEE} ${FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-cex-cache=0 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${ARGS}
+}
+
+function run_cache {
+    ${KLEE} ${FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${ARGS}
 }
 
 ulimit -s unlimited
 
+run_stats
+run_klee_qc_only
+run_cache_qc_only
 run_klee
-run_klee_smm
-run_with_rebase
+run_cache
