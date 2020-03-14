@@ -18,13 +18,14 @@ FLAGS+="-allocate-determ "
 FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-allocate-determ-size=4000 "
 
+SEARCH="--search=dfs "
+
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
 
 function run_stats {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-global-id=1 \
         -collect-query-stats=1 \
@@ -32,9 +33,8 @@ function run_stats {
 }
 
 function run_klee_qc_only {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -43,9 +43,8 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
@@ -54,9 +53,8 @@ function run_klee {
 }
 
 function run_cache_qc_only {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -66,9 +64,8 @@ function run_cache_qc_only {
 }
 
 function run_cache {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
