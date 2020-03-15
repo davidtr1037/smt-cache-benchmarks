@@ -70,7 +70,7 @@ function run_cache {
         -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${N}
 }
 
 ulimit -s unlimited
