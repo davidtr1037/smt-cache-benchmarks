@@ -36,6 +36,14 @@ void symbolic_lookup(apr_hash_t *ht) {
 }
 
 int main(int argc, const char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage...\n");
+        return 1;
+    }
+
+    unsigned n = 0;
+    sscanf(argv[1], "%u", &n);
+
     apr_initialize();
 
     apr_pool_t *mp;
@@ -43,7 +51,7 @@ int main(int argc, const char *argv[]) {
     apr_pool_create(&mp, NULL);
     ht = apr_hash_make(mp);
 
-    for (unsigned int i = 0; i < 2; i++) {
+    for (unsigned int i = 0; i < n; i++) {
         //apr_pool_t *mp;
         //apr_hash_t *ht;
         //apr_pool_create(&mp, NULL);
