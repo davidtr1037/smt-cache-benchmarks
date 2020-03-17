@@ -2,7 +2,9 @@ include ../Makefile.config
 
 SRC_PATH=$(shell realpath ./libxml2-2.9.8)
 
-INCLUDES=-I $(KLEE_SRC)/include -I $(SRC_PATH)/include
+BUILD=build
+BUILD_GCOV=build_gcov
+INCLUDES=-I $(KLEE_SRC)/include -I $(SRC_PATH)/include -I $(SRC_PATH) -I $(BUILD)
 DEFINES=
 
 CFLAGS=$(INCLUDES) $(DEFINES) -g
@@ -11,9 +13,7 @@ LDFLAGS=-lm -lz
 $(SRC_PATH): $(SRC_PATH).tar.gz
 	tar -xf $^
 
-BUILD=build
-BUILD_GCOV=build_gcov
-CONF_FLAGS=--without-iconv
+CONF_FLAGS=--without-iconv --without-lzma --without-pthread
 
 TARGET=test_driver
 BC_TARGET=test_driver.bc

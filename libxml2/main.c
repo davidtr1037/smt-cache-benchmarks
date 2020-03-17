@@ -16,9 +16,8 @@
 #include <libxml/globals.h>
 #include <libxml/uri.h>
 
-void klee_make_symbolic(void *addr, size_t nbytes, const char *name) {
-
-}
+void klee_make_symbolic(void *addr, size_t nbytes, const char *name) { }
+void klee_assume(void *ptr) { }
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -42,17 +41,31 @@ int main(int argc, char *argv[]) {
 
     LIBXML_TEST_VERSION;
     xmlInitParser();
-    htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt(s, size);
-    if (ctxt == NULL) {
+
+    //size = strlen(s);
+    //htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt(s, size);
+    //int z;
+    //klee_make_symbolic(&z, sizeof(z), "z");
+    //if (z) {
+    //    printf("...\n");
+    //}
+    //klee_assume(z == 1 || z == 0);
+
+    char url[2];
+    klee_make_symbolic(url, sizeof(url), "url");
+    url[sizeof(url) - 1] = '\0';
+
+    htmlDocPtr doc = htmlReadDoc(s, url, NULL, 0);
+    if (doc == NULL) {
         return 1;
     }
 
-    htmlDefaultSAXHandlerInit();
-    if (ctxt->sax != NULL) {
-        memcpy(ctxt->sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
-    }
+    //htmlDefaultSAXHandlerInit();
+    //if (ctxt->sax != NULL) {
+    //    memcpy(ctxt->sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
+    //}
 
-    htmlParseDocument(ctxt);
+    //htmlParseDocument(ctxt);
 
     return 0;
 }
