@@ -5,8 +5,9 @@ source ${CURRENT_DIR}/../config.sh
 
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
+MAX_MEMORY=16000
 FLAGS=""
-FLAGS+="-max-memory=8000 "
+FLAGS+="-max-memory=${MAX_MEMORY} "
 FLAGS+="-libc=uclibc "
 FLAGS+="-posix-runtime "
 FLAGS+="-use-forked-solver=0 "
@@ -29,7 +30,7 @@ function run_stats {
 }
 
 function run_klee_qc_only {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -38,7 +39,7 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=1 \
         -cex-cache-try-all \
