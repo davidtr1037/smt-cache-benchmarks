@@ -35,7 +35,6 @@ function run_stats {
 function run_klee_qc_only {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
-        -use-sym-addr \
         -use-cex-cache=0 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
@@ -45,7 +44,6 @@ function run_klee_qc_only {
 function run_klee {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
-        -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
