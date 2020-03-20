@@ -14,24 +14,22 @@ FLAGS+="-allocate-determ "
 FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-only-output-states-covering-new "
 
-N=1
+SEARCH="-search=dfs "
+
+N=3
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
 function run_stats {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
-        -use-sym-addr \
+        ${SEARCH} \
         -use-global-id=1 \
         -collect-query-stats=1 \
         ${BC_FILE} ${N}
 }
 
 function run_klee_qc_only {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
-        -use-sym-addr \
+        ${SEARCH} \
         -use-cex-cache=0 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
@@ -39,9 +37,8 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
@@ -50,9 +47,8 @@ function run_klee {
 }
 
 function run_cache_qc_only {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -62,9 +58,8 @@ function run_cache_qc_only {
 }
 
 function run_cache {
-    search=$1
     ${KLEE} ${FLAGS} \
-        ${search} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
