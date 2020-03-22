@@ -15,8 +15,9 @@ BC_TARGET=test_driver.bc
 %.o: %.c
 	$(WLLVM) -c $(CFLAGS) -DTEST_SYMBOLIC $< -o $@
 
-$(SRC_PATH): $(SRC_PATH).zip
-	unzip $^
+$(SRC_PATH): json.patch
+	unzip json-c-master.zip
+	patch -p1 < $<
 
 $(BUILD_DIR): $(SRC_PATH)
 	mkdir -p ${BUILD_DIR}
