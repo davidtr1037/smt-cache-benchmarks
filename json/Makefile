@@ -1,15 +1,13 @@
-SRC_PATH=$(shell realpath ./json-c/)
+include ../Makefile.config
 
-INCLUDES=-I $(SRC_PATH) -I ./build/
+SRC_PATH=$(shell realpath ./json-c-master)
+BUILD_DIR=build
+
+INCLUDES=-I $(SRC_PATH) -I ${BUILD_DIR}
 DEFINES=
 
 CFLAGS=$(INCLUDES) $(DEFINES) -g
 LDFLAGS=
-CC=gcc
-OPT=opt
-LLVM_DIS=llvm-dis
-WLLVM=wllvm
-EXTRACT_BC=extract-bc
 
 TARGET=test_driver
 BC_TARGET=test_driver.bc
@@ -17,17 +15,22 @@ BC_TARGET=test_driver.bc
 %.o: %.c
 	$(WLLVM) -c $(CFLAGS) -DTEST_SYMBOLIC $< -o $@
 
-.PHONY: json_archive
+$(SRC_PATH): json.patch
+	unzip json-c-master.zip
+	patch -p1 < $<
 
-json_archive: build
-	#rm -rf build && mkdir build
-	#cd build; $(SRC_PATH)/configure CC=$(WLLVM) CFLAGS="-g"
-	make -C ./build -j4
+$(BUILD_DIR): $(SRC_PATH)
+	mkdir -p ${BUILD_DIR}
+	cd ${SRC_PATH}; ./autogen.sh; cd -
+	cd ${BUILD_DIR}; $(SRC_PATH)/configure CC=$(WLLVM) CFLAGS="-g"; cd -
 
-$(TARGET): json_archive main.o
-	$(WLLVM) $(CFLAGS) $(LDFLAGS) main.o ./build/.libs/libjson-c.a -o $@
+$(BUILD_DIR)/.libs/libjson-c.a: $(BUILD_DIR)
+	make -C $(BUILD_DIR) -j4
 
-$(BC_TARGET): $(TARGET) json_archive
+$(TARGET): main.o $(BUILD_DIR)/.libs/libjson-c.a 
+	$(WLLVM) $(CFLAGS) $(LDFLAGS) -L$(KLEE_BUILD)/lib/ $^ -o $@
+
+$(BC_TARGET): $(TARGET)
 	$(EXTRACT_BC) $< -o $@
 	$(OPT) -mem2reg $@ -o $@
 	$(LLVM_DIS) $@
