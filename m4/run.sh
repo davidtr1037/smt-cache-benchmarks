@@ -32,8 +32,20 @@ function run_stats {
         ${BC_FILE} ${ARGS}
 }
 
-function run_klee_qc_only {
+function run_validation {
     ${KLEE} ${FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        -use-iso-cache=1 \
+        -validate-caching \
+        ${BC_FILE} ${ARGS}
+}
+
+function run_klee_qc_only {
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -42,7 +54,7 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=1 \
         -cex-cache-try-all \
