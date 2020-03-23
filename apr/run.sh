@@ -28,7 +28,7 @@ function run_stats {
 }
 
 function run_klee_qc_only {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=0 \
         -cex-cache-try-all \
@@ -37,7 +37,7 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=1 \
         -cex-cache-try-all \
