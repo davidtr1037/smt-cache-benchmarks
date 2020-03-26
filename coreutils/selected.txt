@@ -1,0 +1,15 @@
+base32
+cat
+expr
+nl
+numfmt
+stdbuf
+timeout
+factor
+hostid
+nice
+sort
+stty
+tr
+truncate
+printf
