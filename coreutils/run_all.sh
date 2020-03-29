@@ -50,7 +50,7 @@ function run_klee {
         ${bc_file} ${ARGS} &> /dev/null
 }
 
-function run_symaddr {
+function run_cache {
     bc_file=$1
     name=$2
     max_time=$3
@@ -59,10 +59,8 @@ function run_symaddr {
         -output-dir=${CURRENT_DIR}/build/src/mm-out-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
-        -use-sym-addr \
-        -use-rebase=0 \
-        -use-global-id=1 \
-        -use-recursive-rebase=1 \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
         ${bc_file} ${ARGS} &> /dev/null
 }
 
@@ -81,7 +79,7 @@ function run_symaddr_all {
     rm -rf ${log_file}
     for name in $(cat ${UTILS_FILE}); do
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_symaddr ${bc_file} ${name} ${MAX_TIME} 0
+        run_cache ${bc_file} ${name} ${MAX_TIME} 0
         echo "${name}: status = $?" >> ${log_file}
     done
 }
