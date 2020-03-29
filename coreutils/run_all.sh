@@ -93,7 +93,7 @@ function run_with_limit {
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
         run_klee ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: klee status = $?" >> ${log_file}
-        run_symaddr ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        run_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: mm status = $?" >> ${log_file}
     done < ${INST_FILE}
 }
