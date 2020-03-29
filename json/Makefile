@@ -27,8 +27,8 @@ $(BUILD_DIR): $(SRC_PATH)
 $(BUILD_DIR)/.libs/libjson-c.a: $(BUILD_DIR)
 	make -C $(BUILD_DIR) -j4
 
-$(TARGET): main.o $(BUILD_DIR)/.libs/libjson-c.a 
-	$(WLLVM) $(CFLAGS) $(LDFLAGS) -L$(KLEE_BUILD)/lib/ $^ -o $@
+$(TARGET): $(BUILD_DIR)/.libs/libjson-c.a main.o
+	$(WLLVM) $(CFLAGS) $(LDFLAGS) -L$(KLEE_BUILD)/lib/ main.o $(BUILD_DIR)/.libs/libjson-c.a -o $@
 
 $(BC_TARGET): $(TARGET)
 	$(EXTRACT_BC) $< -o $@
