@@ -1,0 +1,51 @@
+#!/bin/bash
+
+CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
+source ${CURRENT_DIR}/../config.sh
+
+BC_FILE=${CURRENT_DIR}/test_driver.bc
+MAX_TIME=600
+MAX_TIME_INCREASED=5400
+MAX_INST=763063414
+MAX_MEMORY=8000
+SIZE=20
+
+FLAGS=""
+FLAGS+="-max-memory=8000 "
+FLAGS+="-libc=uclibc "
+FLAGS+="-search=dfs "
+FLAGS+="-use-forked-solver=0 "
+FLAGS+="-only-output-states-covering-new "
+FLAGS+="-simplify-sym-indices "
+FLAGS+="-allocate-determ "
+FLAGS+="-allocate-determ-start-address=0x0 "
+FLAGS+="-allocate-determ-size=4000 "
+
+DEF=$(realpath ${CURRENT_DIR}/def.asn)
+
+function run_klee {
+    max_time=$1
+    max_inst=$2
+    ${VANILLA_KLEE} ${FLAGS} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        ${BC_FILE} ${DEF} ${SIZE}
+}
+
+function run_cache {
+    max_time=$1
+    max_inst=$2
+    ${KLEE} ${FLAGS} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${DEF} ${SIZE}
+}
+
+ulimit -s unlimited
+
+#run_klee ${MAX_TIME} 0
+run_klee ${MAX_TIME_INCREASED} ${MAX_INST}
+run_cache ${MAX_TIME_INCREASED} ${MAX_INST}
