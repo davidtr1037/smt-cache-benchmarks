@@ -59,6 +59,7 @@ function run_cache {
         -output-dir=${CURRENT_DIR}/build/src/mm-out-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
+        -use-sym-addr \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         ${bc_file} ${ARGS} &> /dev/null
