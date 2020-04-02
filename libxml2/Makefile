@@ -13,7 +13,7 @@ LDFLAGS=-lm -lz
 $(SRC_PATH): $(SRC_PATH).tar.gz
 	tar -xf $^
 
-CONF_FLAGS=--without-iconv --without-lzma --without-pthread
+CONF_FLAGS=--without-iconv --without-lzma --without-pthread --with-threads=no
 
 TARGET=test_driver
 BC_TARGET=test_driver.bc
