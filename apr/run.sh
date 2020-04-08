@@ -46,7 +46,7 @@ function run_klee {
 }
 
 function run_cache_qc_only {
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
@@ -57,7 +57,7 @@ function run_cache_qc_only {
 }
 
 function run_cache {
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
