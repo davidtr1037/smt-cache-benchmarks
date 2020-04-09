@@ -20,9 +20,9 @@ BC_TARGET=test_driver.bc
 
 $(BUILD_DIR): $(SRC_PATH)
 	mkdir -p ${BUILD_DIR}
-	cd ${BUILD_DIR}; $(SRC_PATH)/configure --enable-trace=no CC=$(WLLVM) CFLAGS="-g -fno-inline"
+	cd ${BUILD_DIR}; $(SRC_PATH)/configure CC=$(WLLVM) CFLAGS="-g"
 
-$(BUILD_DIR)/src/osipparser2/.libs/libosipparser2.a: $(BUILD_DIR)
+$(BUILD_DIR)/src/.libs/libyaml.a: $(BUILD_DIR)
 	make -C ${BUILD_DIR} -j4
 
 $(TARGET): main.o $(BUILD_DIR)/src/.libs/libyaml.a 
