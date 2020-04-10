@@ -76,8 +76,8 @@ function run_cache {
 ulimit -s unlimited
 export KLEE_TEMPLATE=$(realpath ${CURRENT_DIR}/make.input)
 
-run_stats
-run_klee_qc_only
-run_cache_qc_only
-run_klee
+#run_stats
+#run_klee_qc_only
+#run_cache_qc_only
+#run_klee
 run_cache

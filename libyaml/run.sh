@@ -33,11 +33,10 @@ function run_klee {
 function run_cache {
     max_time=$1
     max_inst=$2
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
-        -use-node-cache-stp=1 \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         ${BC_FILE} ${SIZE}
