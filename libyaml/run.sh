@@ -2,6 +2,7 @@
 
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/../config.sh
+source ${CURRENT_DIR}/../common.sh
 
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 MAX_TIME=3600
