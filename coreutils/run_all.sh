@@ -1,7 +1,8 @@
 #!/bin/bash
 
 CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
-source ../config.sh
+source ${CURRENT_DIR}/../config.sh
+source ${CURRENT_DIR}/../common.sh
 
 UTILS_FILE=${CURRENT_DIR}/utils.txt
 LOG_FILE=${CURRENT_DIR}/status.log
@@ -55,7 +56,7 @@ function run_cache {
     name=$2
     max_time=$3
     max_inst=$4
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         -output-dir=${CURRENT_DIR}/build/src/mm-out-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
