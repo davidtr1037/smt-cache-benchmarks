@@ -57,7 +57,7 @@ function run_cache {
     max_time=$3
     max_inst=$4
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/mm-out-${name} \
+        -output-dir=${CURRENT_DIR}/build/src/cache-out-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
