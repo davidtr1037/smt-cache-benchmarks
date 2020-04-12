@@ -27,6 +27,19 @@ function run_stats {
         ${BC_FILE} ${N}
 }
 
+function run_validation {
+    ${KLEE} ${FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        -use-iso-cache=1 \
+        -collect-query-stats \
+        -validate-caching \
+        ${BC_FILE} ${N}
+}
+
 function run_klee_qc_only {
     ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
