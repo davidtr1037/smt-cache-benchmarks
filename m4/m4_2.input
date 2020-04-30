@@ -1,6 +1,0 @@
-define(`a', A)
-define(`b', A)
-?
-define(`c', A)
-define(`d', A)
-?
