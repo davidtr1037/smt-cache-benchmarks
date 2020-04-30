@@ -24,12 +24,16 @@ SEARCH="--search=dfs"
 BC_FILE=${CURRENT_DIR}/build/make.bc
 ARGS="--sym-files 1 1 -sym-stdin ${CURRENT_DIR}/make.input -r -n -R -f A"
 
-function run_stats {
+function run_validation {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
-        -use-global-id=1 \
-        -collect-query-stats=1 \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        -use-iso-cache=1 \
+        -collect-query-stats \
+        -validate-caching \
         ${BC_FILE} ${ARGS}
 }
 
@@ -75,9 +79,3 @@ function run_cache {
 
 ulimit -s unlimited
 export KLEE_TEMPLATE=$(realpath ${CURRENT_DIR}/make.input)
-
-run_stats
-run_klee_qc_only
-run_cache_qc_only
-run_klee
-run_cache
