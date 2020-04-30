@@ -23,15 +23,6 @@ SEARCH="--search=dfs "
 BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
 
-function run_stats {
-    ${KLEE} ${FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-global-id=1 \
-        -collect-query-stats=1 \
-        ${BC_FILE} ${ARGS}
-}
-
 function run_validation {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
@@ -86,9 +77,3 @@ function run_cache {
 }
 
 ulimit -s unlimited
-
-run_validation
-run_klee_qc_only
-run_cache_qc_only
-run_klee
-run_cache
