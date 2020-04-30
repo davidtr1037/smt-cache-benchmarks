@@ -21,12 +21,16 @@ FLAGS+="-allocate-determ-size=4000 "
 SEARCH="-search=dfs"
 ARGS=3
 
-function run_stats {
+function run_validation {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
-        -use-global-id=1 \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=1 \
+        -use-iso-cache=1 \
         -collect-query-stats \
+        -validate-caching \
         ${BC_FILE} ${ARGS}
 }
 
@@ -71,9 +75,3 @@ function run_cache {
 }
 
 ulimit -s unlimited
-
-run_stats
-run_klee_qc_only
-run_cache_qc_only
-run_klee
-run_cache
