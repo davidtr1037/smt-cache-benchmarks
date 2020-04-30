@@ -19,14 +19,6 @@ SEARCH="-search=dfs "
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 N=4
 
-function run_stats {
-    ${KLEE} ${FLAGS} \
-        ${SEARCH} \
-        -use-global-id=1 \
-        -collect-query-stats=1 \
-        ${BC_FILE} ${N}
-}
-
 function run_validation {
     ${KLEE} ${FLAGS} \
         ${SEARCH} \
@@ -81,9 +73,3 @@ function run_cache {
 }
 
 ulimit -s unlimited
-
-run_validation
-run_klee_qc_only
-run_cache_qc_only
-run_klee
-run_cache
