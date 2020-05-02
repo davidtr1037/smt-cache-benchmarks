@@ -28,12 +28,12 @@ function run_stats {
 }
 
 function run_validation {
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
-        -use-branch-cache=1 \
+        -use-branch-cache=0 \
         -use-iso-cache=1 \
         -collect-query-stats \
         -validate-caching \
