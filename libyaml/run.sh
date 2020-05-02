@@ -45,6 +45,5 @@ function run_cache {
 
 ulimit -s unlimited
 
-#run_klee ${MAX_TIME} 0
 run_klee ${MAX_TIME_INCREASED} ${MAX_INST}
 run_cache ${MAX_TIME_INCREASED} ${MAX_INST}
