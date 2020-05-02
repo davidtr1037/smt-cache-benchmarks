@@ -24,12 +24,12 @@ BC_FILE=${CURRENT_DIR}/build/src/m4.bc
 ARGS="-sym-stdin ${CURRENT_DIR}/m4.input -H37 -G"
 
 function run_validation {
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
-        -use-branch-cache=1 \
+        -use-branch-cache=0 \
         -use-iso-cache=1 \
         -collect-query-stats \
         -validate-caching \
