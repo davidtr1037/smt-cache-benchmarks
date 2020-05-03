@@ -45,40 +45,40 @@ function run_klee {
     max_inst=$4
     reset
     ${VANILLA_KLEE} ${FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/klee-out-${name} \
+        -output-dir=${CURRENT_DIR}/build/src/out-klee-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         ${bc_file} ${ARGS} &> /dev/null
 }
 
-function run_cache {
+function run_validation {
     bc_file=$1
     name=$2
     max_time=$3
     max_inst=$4
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/cache-out-${name} \
-        -max-time=${max_time} \
-        -max-instructions=${max_inst} \
-        -use-sym-addr \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        ${bc_file} ${ARGS} &> /dev/null
-}
-
-function run_cache {
-    bc_file=$1
-    name=$2
-    max_time=$3
-    max_inst=$4
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/cache-out-${name} \
+        -output-dir=${CURRENT_DIR}/build/src/out-cache-${name} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         -validate-caching=1 \
+        ${bc_file} ${ARGS} &> /dev/null
+}
+
+function run_cache {
+    bc_file=$1
+    name=$2
+    max_time=$3
+    max_inst=$4
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${CURRENT_DIR}/build/src/out-cache-${name} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
         ${bc_file} ${ARGS} &> /dev/null
 }
 
