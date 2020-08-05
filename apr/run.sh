@@ -16,7 +16,7 @@ FLAGS+="-only-output-states-covering-new "
 
 SEARCH="-search=dfs "
 
-N=3
+ARGS=3
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
 function run_stats {
@@ -24,7 +24,7 @@ function run_stats {
         ${SEARCH} \
         -use-global-id=1 \
         -collect-query-stats=1 \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_validation {
@@ -37,7 +37,7 @@ function run_validation {
         -use-iso-cache=1 \
         -collect-query-stats \
         -validate-caching \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_klee_qc_only {
@@ -46,7 +46,7 @@ function run_klee_qc_only {
         -use-cex-cache=0 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_klee {
@@ -55,7 +55,7 @@ function run_klee {
         -use-cex-cache=1 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_cache_qc_only {
@@ -66,7 +66,7 @@ function run_cache_qc_only {
         -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_cache {
@@ -77,7 +77,7 @@ function run_cache {
         -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
-        ${BC_FILE} ${N}
+        ${BC_FILE} ${ARGS}
 }
 
 ulimit -s unlimited
