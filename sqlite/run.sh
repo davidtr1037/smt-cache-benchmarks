@@ -18,22 +18,25 @@ FLAGS+="-allocate-determ-size=4000 "
 
 SEARCH="-search=dfs "
 
-SIZE=10
+SIZE=20
 BC_FILE=${CURRENT_DIR}/build/test_driver.bc
 
-function run_stats {
-    ${KLEE} ${FLAGS} \
+function run_validation {
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
-        -use-global-id=1 \
-        -collect-query-stats=1 \
+        -use-cex-cache=1 \
+        -cex-cache-try-all \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        -collect-query-stats \
+        -validate-caching \
         ${BC_FILE} ${SIZE}
 }
 
 function run_klee_qc_only {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
-        -use-sym-addr \
         -use-cex-cache=0 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
@@ -41,7 +44,7 @@ function run_klee_qc_only {
 }
 
 function run_klee {
-    ${KLEE} ${FLAGS} \
+    ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=1 \
         -cex-cache-try-all \
@@ -50,7 +53,7 @@ function run_klee {
 }
 
 function run_cache_qc_only {
-    ${KLEE} ${FLAGS} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
@@ -61,9 +64,8 @@ function run_cache_qc_only {
 }
 
 function run_cache {
-    search=$1
-    ${KLEE} ${FLAGS} \
-        ${search} \
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -cex-cache-try-all \
@@ -73,9 +75,3 @@ function run_cache {
 }
 
 ulimit -s unlimited
-
-run_stats
-run_klee_qc_only
-run_cache_qc_only
-run_klee
-run_cache
