@@ -18,7 +18,7 @@ FLAGS+="-allocate-determ-size=4000 "
 
 SEARCH="-search=dfs "
 
-SIZE=20
+ARGS=20
 BC_FILE=${CURRENT_DIR}/build/test_driver.bc
 
 function run_validation {
@@ -31,7 +31,7 @@ function run_validation {
         -use-iso-cache=1 \
         -collect-query-stats \
         -validate-caching \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_klee_qc_only {
@@ -40,7 +40,7 @@ function run_klee_qc_only {
         -use-cex-cache=0 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_klee {
@@ -49,7 +49,7 @@ function run_klee {
         -use-cex-cache=1 \
         -cex-cache-try-all \
         -use-branch-cache=1 \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_cache_qc_only {
@@ -60,7 +60,7 @@ function run_cache_qc_only {
         -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${ARGS}
 }
 
 function run_cache {
@@ -71,7 +71,7 @@ function run_cache {
         -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
-        ${BC_FILE} ${SIZE}
+        ${BC_FILE} ${ARGS}
 }
 
 ulimit -s unlimited
