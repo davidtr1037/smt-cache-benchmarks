@@ -19,7 +19,7 @@ FLAGS+="-allocate-determ-size=4000 "
 SEARCH="-search=dfs "
 
 BC_FILE=${CURRENT_DIR}/build/test_driver.bc
-ARGS=20
+ARGS=15
 
 function run_validation {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
