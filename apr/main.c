@@ -18,51 +18,55 @@ void klee_open_merge() {}
 void klee_close_merge() {}
 #endif
 
-unsigned int custom_hash(const char *char_key, apr_ssize_t *klen) {
-    register size_t val = 0;
-    register char ch;
+static void modify_hashtab(apr_hash_t *ht, int max_table_size)
+{
+    int *k = malloc(sizeof(int));
+    *k=0;
+    apr_hash_set(ht, k, sizeof(int), "FOO");
 
-    for (unsigned int i = 0; i < *klen; i++) {
-        ch = char_key[i];
-        val = (val << 7) + (val >> (sizeof(val) * 8 - 7)) + ch;
+    for(int i = 1; i < max_table_size; i++) {
+      int* key = malloc(sizeof(int));
+      *key = i;
+      apr_hash_set(ht, key, sizeof(int),  "Key value");
+      printf("Inserted key %d\n", *key);
     }
-    return val;
 }
-
-void symbolic_lookup(apr_hash_t *ht) {
-    int *key = malloc(sizeof(*key));
-    klee_make_symbolic(key, sizeof(*key), "key");
-    const char *val = apr_hash_get(ht, key, sizeof(*key));
+void lookUp(apr_hash_t* ht,int key) {
+    const char *val = apr_hash_get(ht, &key, sizeof(int));
+    printf("val for \"key\" is %s\n", val);
 }
-
-int main(int argc, const char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage...\n");
-        return 1;
-    }
-
-    unsigned n = 0;
-    sscanf(argv[1], "%u", &n);
-
-    apr_initialize();
-
+/**
+ * hash table sample code
+ * @remark Error checks omitted
+ */
+unsigned SIZE = 20;
+int main(int argc, const char *argv[])
+{
     apr_pool_t *mp;
     apr_hash_t *ht;
+        
+    apr_initialize();
     apr_pool_create(&mp, NULL);
     ht = apr_hash_make(mp);
 
-    for (unsigned int i = 0; i < n; i++) {
-        //apr_pool_t *mp;
-        //apr_hash_t *ht;
-        //apr_pool_create(&mp, NULL);
-        //ht = apr_hash_make_custom(mp, custom_hash);
-        int* c = malloc(sizeof(*c));
-        *c = i;
-        apr_hash_set(ht, c, sizeof(*c),  "A");
-        symbolic_lookup(ht);
-    }
-
+	  if(argc >= 2) {
+    	sscanf(argv[argc-1], "%u", &SIZE);
+  	}
+    printf("Size %d\n", SIZE);
+    modify_hashtab(ht, SIZE);
+    int k = 0;
+    printf("ht of 2 is %s\n", apr_hash_get(ht, &k, sizeof(k)));
+    
+    int key;
+    klee_make_symbolic(&key, sizeof key, "key");
+    lookUp(ht,key);
+    
+    int key1;
+    klee_make_symbolic(&key1, sizeof key1, "key1");
+    lookUp(ht,key1);
+    
     //apr_pool_destroy(mp);
+
     //apr_terminate();
     return 0;
 }
