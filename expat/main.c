@@ -41,11 +41,7 @@ int main() {
     XML_Parser p = XML_ParserCreate(NULL);
     XML_SetHashSalt(p, 17);
 
-    //strcpy(buffer, INPUT);
-    //if (XML_Parse(p, buffer, strlen(INPUT), XML_FALSE) == XML_STATUS_ERROR) {
-    //
     if (XML_Parse(p, buffer, sizeof(buffer) - 1, XML_FALSE) == XML_STATUS_ERROR) {
-        //printf("error...\n");
         return 1;
     }
 
