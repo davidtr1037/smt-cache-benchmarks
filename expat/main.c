@@ -13,32 +13,18 @@ void klee_assume(uintptr_t c) {
 
 }
 
-int main() {
-    int z;
-    klee_make_symbolic(&z, sizeof(z), "z");
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Usage..\n");
+        return 1;
+    }
 
-    char buffer[7];
-    klee_make_symbolic(buffer, sizeof(buffer), "buffer");
-    buffer[sizeof(buffer) - 1] = 0;
-    //buffer[0] = '<';
-    //buffer[1] = 'x';
-    //buffer[2] = '>';
-    //buffer[3] = '<';
-    //buffer[4] = '/';
-    //buffer[5] = 'x';
-    //buffer[6] = '>';
-    //buffer[4] = '<';
-    //buffer[5] = '/';
-    //buffer[6] = 'x';
-    //buffer[7] = '>';
-    //klee_assume(buffer[1] >= 'a');
-    //klee_assume(buffer[1] <= 'b');
+    size_t size = strtoul(argv[1], NULL, 10);
+    char *buffer = malloc(size);
+    klee_make_symbolic(buffer, size, "buffer");
+    buffer[size - 1] = 0;
 
-    //if (z) {
-    //    printf("z...\n");
-    //}
-
-    XML_Parser p = XML_ParserCreate(NULL);
+    XML_Parser p = XML_ParserCreate("iso-8859-1");
     XML_SetHashSalt(p, 17);
 
     if (XML_Parse(p, buffer, sizeof(buffer) - 1, XML_FALSE) == XML_STATUS_ERROR) {
