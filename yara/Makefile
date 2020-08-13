@@ -3,11 +3,11 @@ include ../Makefile.config
 SRC_PATH=$(shell realpath ./yara-master)
 BUILD_DIR=build
 
-INCLUDES=-I $(SRC_PATH) -I ${BUILD_DIR}
+INCLUDES=-I $(SRC_PATH)/libyara/include
 DEFINES=
 
 CFLAGS=$(INCLUDES) $(DEFINES) -g
-LDFLAGS=
+LDFLAGS=-lm -lpthread
 
 TARGET=test_driver
 BC_TARGET=test_driver.bc
