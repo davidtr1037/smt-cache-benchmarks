@@ -1,0 +1,23 @@
+diff --exclude '*.o' --exclude '*.bc' -ru vanilla/bash-5.0/shell.c patch/bash-5.0/shell.c
+--- vanilla/bash-5.0/shell.c	2020-08-19 09:36:24.319385227 +0300
++++ patch/bash-5.0/shell.c	2020-08-19 09:36:06.918964507 +0300
+@@ -357,11 +357,17 @@
+      char **argv;
+ #else /* !NO_MAIN_ENV_ARG */
+ int
+-main (argc, argv, env)
++main (argc, argv)
+      int argc;
+-     char **argv, **env;
++     char **argv;
++//int
++//main (argc, argv, env)
++//     int argc;
++//     char **argv, **env;
+ #endif /* !NO_MAIN_ENV_ARG */
+ {
++  char **env = malloc(sizeof(char *));
++  env[0] = NULL;
+   register int i;
+   int code, old_errexit_flag;
+ #if defined (RESTRICTED_SHELL)
