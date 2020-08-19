@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     klee_make_symbolic(buffer, size, "buffer");
     //buffer[size - 1] = 0;
 
-    XML_Parser p = XML_ParserCreate("iso-8859-1");
+    XML_Parser p = XML_ParserCreate("utf-16");
     XML_SetHashSalt(p, 17);
 
     if (XML_Parse(p, buffer, size, XML_FALSE) == XML_STATUS_ERROR) {

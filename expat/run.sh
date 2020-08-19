@@ -19,7 +19,7 @@ FLAGS+="-allocate-determ-start-address=0x0 "
 FLAGS+="-allocate-determ-size=4000 "
 
 SEARCH="-search=dfs"
-ARGS=
+ARGS=10
 
 function run_validation {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
