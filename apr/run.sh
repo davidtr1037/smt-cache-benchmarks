@@ -16,7 +16,7 @@ FLAGS+="-only-output-states-covering-new "
 
 SEARCH="-search=dfs "
 
-ARGS=3
+ARGS=15
 BC_FILE=${CURRENT_DIR}/test_driver.bc
 
 function run_stats {
