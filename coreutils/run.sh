@@ -8,6 +8,7 @@ UTILS_FILE=${CURRENT_DIR}/utils.txt
 LOG_FILE=${CURRENT_DIR}/status.log
 INST_FILE=${CURRENT_DIR}/inst.txt
 SANDBOX_DIR=/tmp/env
+ENV_FILE=${CURRENT_DIR}/test.env
 SANDBOX=${SANDBOX_DIR}/sandbox
 
 ARGS="--sym-args 0 1 10 --sym-args 0 2 2 --sym-files 1 8 --sym-stdin 8 --sym-stdout"
@@ -26,7 +27,7 @@ FLAGS+="--libc=uclibc "
 FLAGS+="--posix-runtime "
 FLAGS+="--external-calls=all "
 FLAGS+="--only-output-states-covering-new "
-FLAGS+="--env-file=test.env "
+FLAGS+="--env-file=${ENV_FILE} "
 FLAGS+="--run-in-dir=${SANDBOX} "
 FLAGS+="--watchdog "
 FLAGS+="--switch-type=internal "
