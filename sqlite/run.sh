@@ -6,7 +6,6 @@ source ${CURRENT_DIR}/../common.sh
 
 MAX_MEMORY=8000
 
-FLAGS=""
 FLAGS+="-libc=uclibc "
 FLAGS+="-posix-runtime "
 FLAGS+="-max-memory=${MAX_MEMORY} "
@@ -26,7 +25,6 @@ function run_validation {
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
-        -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         -collect-query-stats \
@@ -38,7 +36,6 @@ function run_klee_qc_only {
     ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=0 \
-        -cex-cache-try-all \
         -use-branch-cache=1 \
         ${BC_FILE} ${ARGS}
 }
@@ -47,7 +44,6 @@ function run_klee {
     ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
         -use-cex-cache=1 \
-        -cex-cache-try-all \
         -use-branch-cache=1 \
         ${BC_FILE} ${ARGS}
 }
@@ -57,7 +53,6 @@ function run_cache_qc_only {
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=0 \
-        -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         ${BC_FILE} ${ARGS}
@@ -68,7 +63,6 @@ function run_cache {
         ${SEARCH} \
         -use-sym-addr \
         -use-cex-cache=1 \
-        -cex-cache-try-all \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         ${BC_FILE} ${ARGS}
