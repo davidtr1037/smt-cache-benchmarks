@@ -1,10 +1,10 @@
 #!/bin/bash
 
-./m4/run_qc.sh
-./make/run_qc.sh
-./sqlite/run_qc.sh
-./apr/run_qc.sh
-./libxml2/run_qc.sh
-./expat/run_qc.sh
-./bash/run_qc.sh
-./json/run_qc.sh
+./m4/run_qc_all.sh
+./make/run_qc_all.sh
+./sqlite/run_qc_all.sh
+./apr/run_qc_all.sh
+./libxml2/run_qc_all.sh
+./expat/run_qc_all.sh
+./bash/run_qc_all.sh
+./json/run_qc_all.sh
