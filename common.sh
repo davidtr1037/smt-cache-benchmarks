@@ -19,6 +19,20 @@ function run_merge {
         ${BC_FILE} ${ARGS}
 }
 
+function run_merge_cache_validation {
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        ${SEARCH} \
+        -use-sym-addr \
+        -use-rebase=1 \
+        -use-recursive-rebase=1 \
+        -use-cex-cache=1 \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        -collect-query-stats \
+        -validate-caching \
+        ${BC_FILE} ${ARGS}
+}
+
 function run_merge_cache {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
