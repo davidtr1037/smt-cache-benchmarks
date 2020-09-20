@@ -19,7 +19,7 @@ function run_merge {
         ${BC_FILE} ${ARGS}
 }
 
-function run_merge_cache_validation {
+function run_merge_validation {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
         -use-sym-addr \

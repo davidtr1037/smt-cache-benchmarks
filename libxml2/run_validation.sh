@@ -4,3 +4,4 @@ CURRENT_DIR=$(dirname ${BASH_SOURCE[0]})
 source ${CURRENT_DIR}/run.sh
 
 run_validation
+run_merge_validation
