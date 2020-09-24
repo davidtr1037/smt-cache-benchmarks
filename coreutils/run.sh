@@ -83,6 +83,42 @@ function run_cache {
         ${bc_file} ${ARGS} &> /dev/null
 }
 
+function run_dsmm {
+    bc_file=$1
+    name=$2
+    max_time=$3
+    max_inst=$4
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${CURRENT_DIR}/build/src/out-klee-${name} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-rebase=1 \
+        -use-recursive-rebase=1 \
+        -reuse-segments \
+        -use-cex-cache=1 \
+        -use-branch-cache=1 \
+        ${bc_file} ${ARGS} &> /dev/null
+}
+
+function run_dsmm_cache {
+    bc_file=$1
+    name=$2
+    max_time=$3
+    max_inst=$4
+    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${CURRENT_DIR}/build/src/out-cache-${name} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-rebase=1 \
+        -use-recursive-rebase=1 \
+        -use-cex-cache=1 \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${bc_file} ${ARGS} &> /dev/null
+}
+
 function run_klee_all {
     log_file=${LOG_FILE}
     rm -rf ${log_file}
@@ -123,6 +159,20 @@ function run_with_limit {
         run_klee ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: klee status = $?" >> ${log_file}
         run_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        echo "${name}: mm status = $?" >> ${log_file}
+    done < ${INST_FILE}
+}
+
+function run_with_limit_dsmm {
+    log_file=${LOG_FILE}
+    rm -rf ${log_file}
+    while IFS= read -r line; do
+        name=$(echo ${line} | awk '{ print $1 }')
+        max_inst=$(echo ${line} | awk '{ print $2 }')
+        bc_file=${CURRENT_DIR}/build/src/${name}.bc
+        run_dsmm ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        echo "${name}: klee status = $?" >> ${log_file}
+        run_dsmm_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: mm status = $?" >> ${log_file}
     done < ${INST_FILE}
 }
