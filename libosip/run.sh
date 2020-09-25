@@ -27,6 +27,8 @@ function run_klee {
     ${VANILLA_KLEE} ${FLAGS} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
+        -use-cex-cache=1 \
+        -use-branch-cache=1 \
         ${BC_FILE} ${SIZE}
 }
 
@@ -37,6 +39,37 @@ function run_cache {
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
+        -use-cex-cache=1 \
+        -use-branch-cache=0 \
+        -use-iso-cache=1 \
+        ${BC_FILE} ${SIZE}
+}
+
+function run_dsmm {
+    max_time=$1
+    max_inst=$2
+    ${KLEE} ${FLAGS} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-rebase=1 \
+        -use-recursive-rebase=1 \
+        -reuse-segments \
+        -use-cex-cache=1 \
+        -use-branch-cache=1 \
+        ${BC_FILE} ${SIZE}
+}
+
+function run_dsmm_cache {
+    max_time=$1
+    max_inst=$2
+    ${KLEE} ${FLAGS} \
+        -max-time=${max_time} \
+        -max-instructions=${max_inst} \
+        -use-sym-addr \
+        -use-rebase=1 \
+        -use-recursive-rebase=1 \
+        -use-cex-cache=1 \
         -use-branch-cache=0 \
         -use-iso-cache=1 \
         ${BC_FILE} ${SIZE}
