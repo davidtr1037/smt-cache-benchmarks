@@ -32,12 +32,16 @@ class KLEEOut(object):
         return None
     
     def parse_stats(self):
-        p = subprocess.Popen(["klee-stats", self.dir_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+        p = subprocess.Popen(
+            ["klee-stats", "--print-more", self.dir_path],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False
+        )
         out, err = p.communicate()
         lines = out.split("\n")
         values = [v.strip() for v in lines[3].split('|')]
         self.instructions = int(values[2])
         self.time = int(float((values[3])))
+        self.memory = int(float((values[10])))
 
     def dump(self):
         print "Time: {}".format(self.time)
