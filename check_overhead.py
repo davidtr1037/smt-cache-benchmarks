@@ -14,7 +14,7 @@ def compare(ko1, ko2, program=None):
         ko2.dump()
         return
 
-    print "{},{},{}".format(program, ko1.time, ko2.time)
+    print "{},{},{},{},{}".format(program, ko1.time, ko2.time, ko1.memory, ko2.memory)
 
 def get_dirs(root_dir):
     dirs = []
