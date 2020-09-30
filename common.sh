@@ -1,7 +1,6 @@
 #!/bin/bash
 
 FLAGS=""
-FLAGS+="-cex-cache-try-all "
 
 CACHE_FLAGS=""
 CACHE_FLAGS+="-use-node-cache-stp=1 "
