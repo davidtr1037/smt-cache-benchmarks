@@ -22,6 +22,7 @@ class KLEEOut(object):
         with open(os.path.join(self.dir_path, "info")) as f:
             lines = f.readlines()
             self.paths = self.get_completed_paths(lines)
+            self.elapsed = self.get_elapsed_time(lines)
    
     def get_completed_paths(self, lines):
         for line in lines:
@@ -30,7 +31,15 @@ class KLEEOut(object):
                 return int(m.groups()[0])
     
         return None
+
+    def get_elapsed_time(self, lines):
+        for line in lines:
+            m = re.search("Elapsed: ([\w:]*)", line)
+            if m is not None:
+                return m.groups()[0]
     
+        return None
+
     def parse_stats(self):
         p = subprocess.Popen(
             ["klee-stats", "--print-more", self.dir_path],
