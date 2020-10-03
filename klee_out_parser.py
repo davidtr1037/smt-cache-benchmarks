@@ -24,7 +24,11 @@ class KLEEOut(object):
             self.paths = self.get_completed_paths(lines)
             self.queries = self.get_queries(lines)
             self.elapsed = self.get_elapsed_time(lines)
-   
+
+        with open(os.path.join(self.dir_path, "messages.txt")) as f:
+            lines = f.readlines()
+            self.cache_size = self.get_cache_size(lines)
+
     def get_completed_paths(self, lines):
         for line in lines:
             m = re.search("KLEE: done: completed paths = (\w*)", line)
@@ -47,6 +51,20 @@ class KLEEOut(object):
             if m is not None:
                 return m.groups()[0]
     
+        return None
+
+    def get_cache_size(self, lines):
+        for line in lines:
+            m = re.search("KLEE: - Total cache: (\w*)", line)
+            if m is not None:
+                qs = int(m.groups()[0])
+                if qs != 0:
+                    return qs
+
+            m = re.search("KLEE: Query cache size: (\w*)", line)
+            if m is not None:
+                return int(m.groups()[0])
+
         return None
 
     def parse_stats(self):
