@@ -31,7 +31,7 @@ class KLEEOut(object):
             if parse_query_stats:
                 self.all_queries = self.get_all_queries(lines)
                 self.relevant_queries = self.get_relevant_queries(lines)
-                self.relevant_address_dependent_queries = self.get_relevant_ad_queries(lines)
+                self.relevant_address_dependent_queries = self.get_relevant_address_dependent_queries(lines)
                 self.unhandled_queries = self.get_unhandled_queries(lines)
 
     def get_completed_paths(self, lines):
@@ -76,7 +76,7 @@ class KLEEOut(object):
         for line in lines:
             m = re.search("KLEE: - All queries: (\w*)", line)
             if m is not None:
-                return m.groups()[0]
+                return int(m.groups()[0])
 
         return None
 
@@ -84,23 +84,23 @@ class KLEEOut(object):
         for line in lines:
             m = re.search("KLEE: - Relevant queries: (\w*)", line)
             if m is not None:
-                return m.groups()[0]
+                return int(m.groups()[0])
 
         return None
 
-    def get_relevant_ad_queries(self, lines):
+    def get_relevant_address_dependent_queries(self, lines):
         for line in lines:
             m = re.search("KLEE: - Relevant address dependent queries: (\w*)", line)
             if m is not None:
-                return m.groups()[0]
+                return int(m.groups()[0])
 
         return None
 
     def get_unhandled_queries(self, lines):
         for line in lines:
-            m = re.search("KLEE: - Unhandles queries: (\w*)", line)
+            m = re.search("KLEE: - Unhandled queries: (\w*)", line)
             if m is not None:
-                return m.groups()[0]
+                return int(m.groups()[0])
 
         return None
 
