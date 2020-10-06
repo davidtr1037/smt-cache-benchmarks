@@ -111,30 +111,10 @@ make
 
 ## Benchmarks
 
-Build the benchmarks:
+Compile the benchmarks:
 ```
-cd benchmarks/m4
-make all
-cd benchmarks/make
-make all
-cd benchmarks/sqlite
-make all
-cd benchmarks/apr
-make test_driver.bc
-cd benchmarks/libxml2
-make test_driver.bc
-cd benchmarks/expat
-make test_driver.bc
-cd benchmarks/bash
-make all
-cd benchmarks/json
-make test_driver.bc
-cd benchmarks/libosip
-make test_driver.bc
-cd benchmarks/libyaml
-make test_driver.bc
-cd benchmarks/coreutils
-make all && ./extract.sh
+cd benchmarks
+./build.sh
 ```
 
 ## Traces
@@ -142,6 +122,11 @@ make all && ./extract.sh
 We provide the traces of our experiments (KLEE-output directories),
 which can be found in the `traces` directory.
 Use the following commands to extract the results of our experiments.
+
+Table 2:
+```
+python benchmarks/check_stats.py traces/validation
+```
 
 Table 3:
 ```
