@@ -33,10 +33,10 @@ def dump(root_dir):
         if os.path.exists(klee_out_dir):
             klee_ko = KLEEOut(klee_out_dir, parse_query_stats=True)
             print "{}".format(p)
-            print "- C1: {}".format(klee_ko.all_queries)
-            print "- C2: {}".format(klee_ko.relevant_queries)
-            print "- C3: {}".format(klee_ko.relevant_address_dependent_queries)
-            print "- C4: {}".format(klee_ko.relevant_address_dependent_queries - klee_ko.unhandled_queries)
+            print "- Total: {} C1: {} C2: {} C3: {}".format(klee_ko.all_queries,
+                                                            klee_ko.relevant_queries,
+                                                            klee_ko.relevant_address_dependent_queries,
+                                                            klee_ko.relevant_address_dependent_queries - klee_ko.unhandled_queries)
         else:
             assert(False)
 
