@@ -171,6 +171,10 @@ Edit `benchmarks/Makefile.config`:
 ```
 KLEE_SRC := <root_dir>/src/klee-qc
 ```
+Edit `benchmarks/coreutils/test.env`:
+```
+PWD=<root_dir>/benchmarks/coreutils
+```
 
 ### Empirical Validation
 
