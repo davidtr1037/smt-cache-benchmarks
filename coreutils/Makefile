@@ -18,6 +18,7 @@ $(BUILD): $(SRC)
 
 all: $(BUILD)
 	make -C $(BUILD) -j4
+	$(shell ./extract_bc.sh)
 
 clean:
 	rm -rf $(BUILD)
