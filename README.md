@@ -184,13 +184,13 @@ Run the following command (from the `benchmarks` directory):
 ```
 
 ### Performance
-Run the following command:
+Run the following command (from the `benchmarks` directory):
 ```
 ./run_qc_all.sh
 ```
 
 ### Overhead
-Run the following command:
+Run the following command (from the `benchmarks` directory):
 ```
 ./run_overhead_all.sh
 ```
