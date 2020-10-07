@@ -42,15 +42,6 @@ int main(int argc, char *argv[]) {
     LIBXML_TEST_VERSION;
     xmlInitParser();
 
-    //size = strlen(s);
-    //htmlParserCtxtPtr ctxt = htmlCreateMemoryParserCtxt(s, size);
-    //int z;
-    //klee_make_symbolic(&z, sizeof(z), "z");
-    //if (z) {
-    //    printf("...\n");
-    //}
-    //klee_assume(z == 1 || z == 0);
-
     char url[2];
     klee_make_symbolic(url, sizeof(url), "url");
     url[sizeof(url) - 1] = '\0';
@@ -59,13 +50,6 @@ int main(int argc, char *argv[]) {
     if (doc == NULL) {
         return 1;
     }
-
-    //htmlDefaultSAXHandlerInit();
-    //if (ctxt->sax != NULL) {
-    //    memcpy(ctxt->sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
-    //}
-
-    //htmlParseDocument(ctxt);
 
     return 0;
 }
