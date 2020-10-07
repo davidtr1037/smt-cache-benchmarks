@@ -178,19 +178,19 @@ PWD=<root_dir>/benchmarks/coreutils
 
 ### Empirical Validation
 
-Run the following command:
+Run the following command (from the `benchmarks` directory):
 ```
-./benchmarks/run_validation_all.sh
+./run_validation_all.sh
 ```
 
 ### Performance
 Run the following command:
 ```
-./benchmarks/run_qc_all.sh
+./run_qc_all.sh
 ```
 
 ### Overhead
 Run the following command:
 ```
-./benchmarks/run_overhead_all.sh
+./run_overhead_all.sh
 ```
