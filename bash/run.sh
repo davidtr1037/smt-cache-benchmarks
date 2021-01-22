@@ -19,35 +19,5 @@ SEARCH="-search=dfs "
 ARGS="A --sym-files 1 100"
 BC_FILE=${CURRENT_DIR}/build/bash.bc
 
-function run_validation {
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-cex-cache=1 \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        -collect-query-stats \
-        -validate-caching \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_klee {
-    ${VANILLA_KLEE} ${FLAGS} \
-        ${SEARCH} \
-        -use-cex-cache=1 \
-        -use-branch-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_cache {
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-cex-cache=1 \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
 ulimit -s unlimited
 export KLEE_TEMPLATE=$(realpath ${CURRENT_DIR}/bash.input)

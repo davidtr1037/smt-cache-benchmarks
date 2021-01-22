@@ -20,54 +20,6 @@ SEARCH="-search=dfs "
 BC_FILE=${CURRENT_DIR}/build/test_driver.bc
 ARGS=15
 
-function run_validation {
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-cex-cache=1 \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        -collect-query-stats \
-        -validate-caching \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_klee_qc_only {
-    ${VANILLA_KLEE} ${FLAGS} \
-        ${SEARCH} \
-        -use-cex-cache=0 \
-        -use-branch-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_klee {
-    ${VANILLA_KLEE} ${FLAGS} \
-        ${SEARCH} \
-        -use-cex-cache=1 \
-        -use-branch-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_cache_qc_only {
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-cex-cache=0 \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
-function run_cache {
-    ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        ${SEARCH} \
-        -use-sym-addr \
-        -use-cex-cache=1 \
-        -use-branch-cache=0 \
-        -use-iso-cache=1 \
-        ${BC_FILE} ${ARGS}
-}
-
 function run_merge {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
