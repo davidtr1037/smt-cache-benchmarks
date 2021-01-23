@@ -9,6 +9,7 @@ CACHE_FLAGS+="-use-global-id=1 "
 function run_validation {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -use-branch-cache=0 \
@@ -21,6 +22,7 @@ function run_validation {
 function run_merge_validation {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-rebase=1 \
         -use-recursive-rebase=1 \
@@ -35,6 +37,7 @@ function run_merge_validation {
 function run_klee {
     ${VANILLA_KLEE} ${FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-cex-cache=1 \
         -use-branch-cache=1 \
         ${BC_FILE} ${ARGS}
@@ -43,6 +46,7 @@ function run_klee {
 function run_cache {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-cex-cache=1 \
         -use-branch-cache=0 \
@@ -53,6 +57,7 @@ function run_cache {
 function run_merge {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_PREFIX} \
         -use-sym-addr \
         -use-rebase=1 \
         -use-recursive-rebase=1 \
@@ -65,6 +70,7 @@ function run_merge {
 function run_merge_cache {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-rebase=1 \
         -use-recursive-rebase=1 \
