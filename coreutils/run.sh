@@ -46,7 +46,7 @@ function run_klee {
     max_inst=$4
     reset
     ${VANILLA_KLEE} ${FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/out-klee-${name} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         ${bc_file} ${ARGS} &> /dev/null
@@ -74,7 +74,7 @@ function run_cache {
     max_time=$3
     max_inst=$4
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/out-cache-${name} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
@@ -89,7 +89,7 @@ function run_dsmm {
     max_time=$3
     max_inst=$4
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/out-klee-${name} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
@@ -107,7 +107,7 @@ function run_dsmm_cache {
     max_time=$3
     max_inst=$4
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
-        -output-dir=${CURRENT_DIR}/build/src/out-cache-${name} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
@@ -156,9 +156,9 @@ function run_with_limit {
         name=$(echo ${line} | awk '{ print $1 }')
         max_inst=$(echo ${line} | awk '{ print $2 }')
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_klee ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        OUTPUT_DIR=${ARTIFACT_DIR}/overhead_fmm/out-klee-${name} run_klee ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: klee status = $?" >> ${log_file}
-        run_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        OUTPUT_DIR=${ARTIFACT_DIR}/overhead_fmm/out-cache-${name} run_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: mm status = $?" >> ${log_file}
     done < ${INST_FILE}
 }
@@ -170,9 +170,9 @@ function run_with_limit_dsmm {
         name=$(echo ${line} | awk '{ print $1 }')
         max_inst=$(echo ${line} | awk '{ print $2 }')
         bc_file=${CURRENT_DIR}/build/src/${name}.bc
-        run_dsmm ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        OUTPUT_DIR=${ARTIFACT_DIR}/overhead_dsmm/out-klee-${name} run_dsmm ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: klee status = $?" >> ${log_file}
-        run_dsmm_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
+        OUTPUT_DIR=${ARTIFACT_DIR}/overhead_dsmm/out-cache-${name} run_dsmm_cache ${bc_file} ${name} ${MAX_TIME_INCREASED} ${max_inst}
         echo "${name}: mm status = $?" >> ${log_file}
     done < ${INST_FILE}
 }
