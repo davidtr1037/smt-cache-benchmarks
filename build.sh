@@ -3,7 +3,7 @@
 make -C m4 all
 make -C make all
 make -C sqlite all
-make -C test_driver.bc
+make -C apr test_driver.bc
 make -C libxml2 test_driver.bc
 make -C expat test_driver.bc
 make -C bash all

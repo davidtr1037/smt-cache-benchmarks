@@ -109,6 +109,24 @@ CXXFLAGS="-fno-rtti" cmake \
 make
 ```
 
+## Configuration
+Edit `benchmarks/config.sh`:
+```
+#!/bin/bash
+
+VANILLA_KLEE=<root_dir>/src/klee-vanilla-build/bin/klee
+KLEE=<root_dir>/src/klee-qc-build/bin/klee
+ARTIFACT_DIR=<output_dir>
+```
+Edit `benchmarks/Makefile.config`:
+```
+KLEE_SRC := <root_dir>/src/klee-qc
+```
+Edit `benchmarks/coreutils/test.env`:
+```
+PWD=<root_dir>/benchmarks/coreutils
+```
+
 ## Benchmarks
 
 Compile the benchmarks:
@@ -159,22 +177,6 @@ python benchmarks/check_overhead.py traces/overhead_dsmm
 ```
 
 ## Experiments
-
-Edit `benchmarks/config.sh`:
-```
-#!/bin/bash
-
-VANILLA_KLEE=<root_dir>/src/klee-vanilla-build/bin/klee
-KLEE=<root_dir>/src/klee-qc-build/bin/klee
-```
-Edit `benchmarks/Makefile.config`:
-```
-KLEE_SRC := <root_dir>/src/klee-qc
-```
-Edit `benchmarks/coreutils/test.env`:
-```
-PWD=<root_dir>/benchmarks/coreutils
-```
 
 ### Empirical Validation
 
