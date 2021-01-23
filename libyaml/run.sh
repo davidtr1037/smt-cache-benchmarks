@@ -26,6 +26,7 @@ function run_klee {
     max_time=$1
     max_inst=$2
     ${VANILLA_KLEE} ${FLAGS} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-cex-cache=1 \
@@ -37,6 +38,7 @@ function run_cache {
     max_time=$1
     max_inst=$2
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
@@ -50,6 +52,7 @@ function run_dsmm {
     max_time=$1
     max_inst=$2
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
@@ -65,6 +68,7 @@ function run_dsmm_cache {
     max_time=$1
     max_inst=$2
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
+        -output-dir=${OUTPUT_DIR} \
         -max-time=${max_time} \
         -max-instructions=${max_inst} \
         -use-sym-addr \
