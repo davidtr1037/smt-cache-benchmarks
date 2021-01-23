@@ -23,6 +23,7 @@ ARGS=15
 function run_merge {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-rebase=1 \
         -use-recursive-rebase=1 \
@@ -35,6 +36,7 @@ function run_merge {
 function run_merge_cache {
     ${KLEE} ${FLAGS} ${CACHE_FLAGS} \
         ${SEARCH} \
+        -output-dir=${OUTPUT_DIR} \
         -use-sym-addr \
         -use-rebase=1 \
         -use-recursive-rebase=1 \
